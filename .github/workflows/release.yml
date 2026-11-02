@@ -37,5 +37,9 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Release exactly the tag that triggered this run. Without it GoReleaser picks the
+          # highest tag at the commit by git's version sort, which ranks "v0.2.0-rc.1" above
+          # "v0.2.0" when both point at the same commit.
+          GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
           # Fine-grained token with "Contents: read and write" on cloudowski/homebrew-tap only.
           HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
