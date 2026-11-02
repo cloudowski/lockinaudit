@@ -1,4 +1,4 @@
-// Package walk does the single deterministic directory walk of a scan and
+// Package walk does the single deterministic directory walk of an inspection and
 // classifies files into source kinds for the detectors.
 package walk
 
@@ -17,7 +17,7 @@ import (
 
 	"go.yaml.in/yaml/v3"
 
-	"github.com/cloudowski/exitctl/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/model"
 )
 
 // MaxFileSize is the largest file the walk hands to detectors (5 MiB).
@@ -28,7 +28,7 @@ const (
 	NoteTooLarge     = "file larger than 5 MiB"
 	NoteNotUTF8      = "not UTF-8 text"
 	NoteUnreadable   = "file could not be read"
-	NoteOutsideRoot  = "symlink target outside scan root"
+	NoteOutsideRoot  = "symlink target outside inspection root"
 	NoteSymlinkError = "symlink could not be resolved"
 )
 
@@ -39,7 +39,7 @@ const sniffLimit = 64 << 10
 // Index is the result of one walk. All paths are relative to Root with '/'
 // separators, and every slice is sorted.
 type Index struct {
-	// Root is the absolute, cleaned scan root.
+	// Root is the absolute, cleaned inspection root.
 	Root string
 	// Files lists classified files per source kind (only non-empty kinds).
 	Files map[model.SourceKind][]string
@@ -58,7 +58,7 @@ type Index struct {
 var defaultSkipDirs = map[string]bool{
 	".git": true, "node_modules": true, "vendor": true, ".venv": true, "venv": true,
 	"__pycache__": true, "dist": true, "build": true, "target": true, "bin": true,
-	"obj": true, ".exitctl": true, ".idea": true, ".vscode": true,
+	"obj": true, ".lockinaudit": true, ".idea": true, ".vscode": true,
 }
 
 var codeExts = map[string]bool{
@@ -115,22 +115,22 @@ type walker struct {
 func Walk(root string, extraIgnores []string) (Index, error) {
 	abs, err := filepath.Abs(root)
 	if err != nil {
-		return Index{}, fmt.Errorf("scan root %s: %w", root, err)
+		return Index{}, fmt.Errorf("inspection root %s: %w", root, err)
 	}
 	abs = filepath.Clean(abs)
 	fi, err := os.Stat(abs)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			return Index{}, fmt.Errorf("scan root %s does not exist", root)
+			return Index{}, fmt.Errorf("inspection root %s does not exist", root)
 		}
-		return Index{}, fmt.Errorf("scan root %s cannot be read", root)
+		return Index{}, fmt.Errorf("inspection root %s cannot be read", root)
 	}
 	if !fi.IsDir() {
-		return Index{}, fmt.Errorf("scan root %s is not a directory", root)
+		return Index{}, fmt.Errorf("inspection root %s is not a directory", root)
 	}
 	real, err := filepath.EvalSymlinks(abs)
 	if err != nil {
-		return Index{}, fmt.Errorf("scan root %s cannot be resolved", root)
+		return Index{}, fmt.Errorf("inspection root %s cannot be resolved", root)
 	}
 	w := &walker{
 		root:  real,

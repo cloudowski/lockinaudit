@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/cloudowski/exitctl/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/model"
 )
 
 // Mask replaces secret matches in evidence lines.

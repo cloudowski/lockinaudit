@@ -1,4 +1,4 @@
-module github.com/cloudowski/exitctl
+module github.com/cloudowski/lockinaudit
 
 go 1.27
 

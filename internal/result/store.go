@@ -11,8 +11,8 @@ import (
 
 	"github.com/santhosh-tekuri/jsonschema/v6"
 
-	"github.com/cloudowski/exitctl/internal/version"
-	"github.com/cloudowski/exitctl/schemas"
+	"github.com/cloudowski/lockinaudit/internal/version"
+	"github.com/cloudowski/lockinaudit/schemas"
 )
 
 // IncompatibleError is returned when a result file has an unsupported format.
@@ -22,18 +22,18 @@ type IncompatibleError struct {
 }
 
 func (e *IncompatibleError) Error() string {
-	return fmt.Sprintf("%s has result format %q; this exitctl reads %s", e.Path, e.Format, version.ResultFormat)
+	return fmt.Sprintf("%s has result format %q; this lockinaudit reads %s", e.Path, e.Format, version.ResultFormat)
 }
 
 // Save writes the document to path, creating parent directories. When the
-// parent directory is named ".exitctl", a .gitignore containing "*" is
+// parent directory is named ".lockinaudit", a .gitignore containing "*" is
 // created next to it so results are never committed by accident.
 func Save(d *Document, path string) error {
 	dir := filepath.Dir(path)
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return err
 	}
-	if filepath.Base(dir) == ".exitctl" {
+	if filepath.Base(dir) == ".lockinaudit" {
 		gi := filepath.Join(dir, ".gitignore")
 		if _, err := os.Stat(gi); os.IsNotExist(err) {
 			if err := os.WriteFile(gi, []byte("*\n"), 0o644); err != nil {
@@ -57,7 +57,7 @@ func Load(path string) (*Document, error) {
 	b, err := os.ReadFile(path)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return nil, fmt.Errorf("no result at %s: run 'exitctl scan' first or pass --input", path)
+			return nil, fmt.Errorf("no result at %s: run 'lockinaudit inspect' first or pass --input", path)
 		}
 		return nil, err
 	}
@@ -70,12 +70,12 @@ func Decode(name string, b []byte) (*Document, error) {
 		Format string `json:"format"`
 	}
 	if err := json.Unmarshal(b, &head); err != nil {
-		return nil, fmt.Errorf("%s is not a valid exitctl result file", name)
+		return nil, fmt.Errorf("%s is not a valid lockinaudit result file", name)
 	}
 	if head.Format != version.ResultFormat {
 		major := strings.SplitN(head.Format, "/", 2)
-		if len(major) != 2 || major[0] != "exitctl.result" {
-			return nil, fmt.Errorf("%s is not an exitctl result file", name)
+		if len(major) != 2 || major[0] != "lockinaudit.result" {
+			return nil, fmt.Errorf("%s is not an lockinaudit result file", name)
 		}
 		return nil, &IncompatibleError{Path: name, Format: head.Format}
 	}

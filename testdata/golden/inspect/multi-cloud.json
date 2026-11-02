@@ -1,8 +1,8 @@
 {
-  "format": "exitctl.result/v1",
+  "format": "lockinaudit.result/v1",
   "kind": "result",
   "versions": {
-    "tool": "0.1.0-dev",
+    "tool": "0.2.0-dev",
     "catalog": "2026.10.1",
     "catalog_schema": "1.0",
     "rules": "1.1.0",
@@ -15,7 +15,7 @@
       "repo": "multi-cloud",
       "as_of": "2026-10-06",
       "versions": {
-        "tool": "0.1.0-dev",
+        "tool": "0.2.0-dev",
         "catalog": "2026.10.1",
         "catalog_schema": "1.0",
         "rules": "1.1.0",
@@ -66,31 +66,31 @@
     ],
     "raw_nodes": [
       {
-        "id": "multi-cloud//#apps/Deployment/default/exitctl-app",
+        "id": "multi-cloud//#apps/Deployment/default/lockinaudit-app",
         "node_kind": "resource",
         "source_kind": "helm",
         "type": "apps/Deployment",
-        "native_address": "apps/Deployment/default/exitctl-app",
+        "native_address": "apps/Deployment/default/lockinaudit-app",
         "attributes": {
           "metadata": {
             "labels": {
-              "app.kubernetes.io/instance": "exitctl",
+              "app.kubernetes.io/instance": "lockinaudit",
               "app.kubernetes.io/name": "app"
             },
-            "name": "exitctl-app"
+            "name": "lockinaudit-app"
           },
           "spec": {
             "replicas": 2,
             "selector": {
               "matchLabels": {
-                "app.kubernetes.io/instance": "exitctl",
+                "app.kubernetes.io/instance": "lockinaudit",
                 "app.kubernetes.io/name": "app"
               }
             },
             "template": {
               "metadata": {
                 "labels": {
-                  "app.kubernetes.io/instance": "exitctl",
+                  "app.kubernetes.io/instance": "lockinaudit",
                   "app.kubernetes.io/name": "app"
                 }
               },
@@ -131,7 +131,7 @@
         "attributes": {
           "metadata": {
             "labels": {
-              "app.kubernetes.io/instance": "exitctl",
+              "app.kubernetes.io/instance": "lockinaudit",
               "app.kubernetes.io/name": "app"
             },
             "name": "shop-assets"
@@ -604,10 +604,10 @@
   "graph": {
     "nodes": [
       {
-        "id": "multi-cloud//#apps/Deployment/default/exitctl-app",
+        "id": "multi-cloud//#apps/Deployment/default/lockinaudit-app",
         "kind": "resource",
         "type": "apps/Deployment",
-        "native_address": "apps/Deployment/default/exitctl-app",
+        "native_address": "apps/Deployment/default/lockinaudit-app",
         "class": "neutral",
         "sources": [
           "multi-cloud//charts/app/templates/deployment.yaml"
@@ -2579,7 +2579,7 @@
         "wave": 1,
         "units": [
           [
-            "multi-cloud//#apps/Deployment/default/exitctl-app"
+            "multi-cloud//#apps/Deployment/default/lockinaudit-app"
           ],
           [
             "multi-cloud//#storage.cnrm.cloud.google.com/StorageBucket/default/shop-assets"

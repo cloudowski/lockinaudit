@@ -1,20 +1,20 @@
-# Sample exitctl configuration.
+# Sample lockinaudit configuration.
 #
-# Copy this file to the root of the repository you scan and keep the name ".exitctl.yaml":
-# exitctl looks for it in the scan root first, then in the current directory. Pass another file
+# Copy this file to the root of the repository you inspect and keep the name ".lockinaudit.yaml":
+# lockinaudit looks for it in the inspection root first, then in the current directory. Pass another file
 # with --config. Every key except "version" is optional, and a file with only "version: 1"
 # gives the default behavior. The values below are examples: adjust them to your repository.
 #
-# Check that it is accepted:   exitctl scan . --config .exitctl.yaml
+# Check that it is accepted:   lockinaudit inspect . --config .lockinaudit.yaml
 # JSON Schema (for editors):   schemas/config.schema.json
 
 version: 1
 
 # Name used for this repository in results and merged reports. Default: taken from the git
-# remote "origin" when there is one, otherwise the name of the scan directory.
+# remote "origin" when there is one, otherwise the name of the inspected directory.
 repo_name: shop
 
-# Extra paths to skip, as globs relative to the scan root. Well-known dependency, cache and
+# Extra paths to skip, as globs relative to the inspection root. Well-known dependency, cache and
 # VCS directories (node_modules, .git, vendor, ...) are always skipped.
 # The same can be given on the command line: --ignore 'docs/**'
 ignore:
@@ -23,7 +23,7 @@ ignore:
   - "infra/legacy/**"
 
 # Helm charts are rendered offline with their default values. To render a chart with other
-# values files, map the chart directory (relative to the scan root) to a list of files.
+# values files, map the chart directory (relative to the inspection root) to a list of files.
 # The same can be given on the command line: --values charts/app=charts/app/values-prod.yaml
 helm:
   values_files:
@@ -59,7 +59,7 @@ exceptions:
     owner: orders-team
     expires: 2027-01-31
 
-# Scoring overrides. The defaults below are what exitctl uses when this section is absent.
+# Scoring overrides. The defaults below are what lockinaudit uses when this section is absent.
 # Changing any value marks the result as "custom scoring", so results are not comparable with
 # runs that use the defaults. Leave this section out unless you have a reason to change it.
 #

@@ -1,4 +1,4 @@
-// Package model is the narrow waist of exitctl: every source detector emits
+// Package model is the narrow waist of lockinaudit: every source detector emits
 // these facts and every later stage (catalog, graph, scoring) consumes them.
 // Facts never depend on the catalog (data-model.md Part 2).
 package model

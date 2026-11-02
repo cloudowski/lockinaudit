@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/version"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/version"
 )
 
 func ev(repo, path string, line int, excerpt string, k model.SourceKind) model.Evidence {
@@ -232,7 +232,7 @@ func TestLoadAllRejectsIncompatibleFormat(t *testing.T) {
 		t.Fatalf("docs = %+v", docs)
 	}
 	bad := filepath.Join(dir, "bad.json")
-	if err := os.WriteFile(bad, []byte(`{"format":"exitctl.result/v2","kind":"result"}`), 0o644); err != nil {
+	if err := os.WriteFile(bad, []byte(`{"format":"lockinaudit.result/v2","kind":"result"}`), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	_, err = LoadAll([]string{good, bad})

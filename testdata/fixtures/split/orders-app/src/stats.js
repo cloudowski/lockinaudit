@@ -1,4 +1,4 @@
-// The table name sits on the SDK import line so that exitctl links this
+// The table name sits on the SDK import line so that lockinaudit links this
 // component to the declared table with resource-level confidence.
 const { DynamoDBClient, ScanCommand } = require("@aws-sdk/client-dynamodb"), table = { TableName: "orders" };
 

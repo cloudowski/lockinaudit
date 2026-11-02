@@ -3,7 +3,7 @@ package packages
 import (
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/model"
 )
 
 func names(ps []Pkg) map[string]string {

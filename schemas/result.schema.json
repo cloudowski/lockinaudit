@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:exitctl:schema:result:v1",
-  "title": "exitctl result document",
-  "description": "Result of scan, merge, or graph export. Arrays are sorted by documented keys; no timestamps; paths are repo-relative with '/'.",
+  "$id": "urn:lockinaudit:schema:result:v1",
+  "title": "lockinaudit result document",
+  "description": "Result of inspect, merge, or graph export. Arrays are sorted by documented keys; no timestamps; paths are repo-relative with '/'.",
   "type": "object",
   "required": [
     "format",
@@ -16,7 +16,7 @@
   "additionalProperties": false,
   "properties": {
     "format": {
-      "const": "exitctl.result/v1"
+      "const": "lockinaudit.result/v1"
     },
     "kind": {
       "enum": [
@@ -30,7 +30,7 @@
     "inputs": {
       "type": "array",
       "minItems": 1,
-      "description": "Sorted by repo. One entry per scanned repository or merged input.",
+      "description": "Sorted by repo. One entry per inspected repository or merged input.",
       "items": {
         "type": "object",
         "required": [
@@ -448,7 +448,7 @@
         },
         "service": {
           "type": "string",
-          "description": "Service ID resolved at scan time; re-resolved on merge when the catalog changes."
+          "description": "Service ID resolved at inspection time; re-resolved on merge when the catalog changes."
         },
         "match": {
           "type": "string"
@@ -793,7 +793,7 @@
         "status": {
           "enum": [
             "ok",
-            "nothing_to_scan",
+            "nothing_to_inspect",
             "nothing_scored"
           ]
         },

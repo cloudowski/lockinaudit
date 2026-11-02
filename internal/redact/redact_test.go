@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/model"
 )
 
 // Fake secrets assembled at runtime so scanners do not flag this file.

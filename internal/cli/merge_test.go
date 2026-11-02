@@ -7,24 +7,24 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/result"
-	"github.com/cloudowski/exitctl/internal/testutil"
+	"github.com/cloudowski/lockinaudit/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/testutil"
 )
 
 var splitRepos = []string{"infra", "orders-app", "billing-app"}
 
-// scanSplit scans the split fixtures into dir and returns the result paths.
-func scanSplit(t *testing.T, dir string) map[string]string {
+// inspectSplit inspects the split fixtures into dir and returns the result paths.
+func inspectSplit(t *testing.T, dir string) map[string]string {
 	t.Helper()
 	root := testutil.RepoRoot(t)
 	out := map[string]string{}
 	for _, r := range splitRepos {
 		p := filepath.Join(dir, r+".json")
 		var so, se bytes.Buffer
-		code := Run([]string{"scan", filepath.Join(root, "testdata", "fixtures", "split", r),
+		code := Run([]string{"inspect", filepath.Join(root, "testdata", "fixtures", "split", r),
 			"--include-drafts", "--as-of", "2026-10-06", "--repo-name", r, "--no-store", "--output", p}, &so, &se)
 		if code != 0 {
-			t.Fatalf("scan %s exited %d: %s", r, code, se.String())
+			t.Fatalf("inspect %s exited %d: %s", r, code, se.String())
 		}
 		out[r] = p
 	}
@@ -56,7 +56,7 @@ func permutations(s []string) [][]string {
 // TestMergePermutations: every input order gives a byte-identical result (SC-003, FR-076).
 func TestMergePermutations(t *testing.T) {
 	dir := t.TempDir()
-	paths := scanSplit(t, dir)
+	paths := inspectSplit(t, dir)
 	var first []byte
 	for i, perm := range permutations(splitRepos) {
 		var in []string
@@ -115,7 +115,7 @@ func TestMergePermutations(t *testing.T) {
 // keeps its versions in inputs.
 func TestMergeKeepsInputVersions(t *testing.T) {
 	dir := t.TempDir()
-	paths := scanSplit(t, dir)
+	paths := inspectSplit(t, dir)
 	old, err := result.Load(paths["infra"])
 	if err != nil {
 		t.Fatal(err)
@@ -147,13 +147,13 @@ func TestMergeKeepsInputVersions(t *testing.T) {
 // TestMergeRejectsNewerFormat: an unsupported format major exits 3 naming the file.
 func TestMergeRejectsNewerFormat(t *testing.T) {
 	dir := t.TempDir()
-	paths := scanSplit(t, dir)
+	paths := inspectSplit(t, dir)
 	b, err := os.ReadFile(paths["infra"])
 	if err != nil {
 		t.Fatal(err)
 	}
 	v2 := filepath.Join(dir, "v2.json")
-	if err := os.WriteFile(v2, bytes.Replace(b, []byte("exitctl.result/v1"), []byte("exitctl.result/v2"), 1), 0o644); err != nil {
+	if err := os.WriteFile(v2, bytes.Replace(b, []byte("lockinaudit.result/v1"), []byte("lockinaudit.result/v2"), 1), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	code, msg := runMerge(t, filepath.Join(dir, "m.json"), paths["orders-app"], v2)

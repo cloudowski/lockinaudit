@@ -8,13 +8,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cloudowski/exitctl/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/result"
 )
 
 // Options controls the DOT output.
 type Options struct {
 	// Expand disables type collapse and container grouping (contracts/cli.md
-	// "exitctl graph" --expand): every node is drawn on its own, without clusters.
+	// "lockinaudit graph" --expand): every node is drawn on its own, without clusters.
 	Expand bool
 	// Waves adds the migration wave to node labels.
 	Waves bool
@@ -134,7 +134,7 @@ func DOT(w io.Writer, doc *result.Document, opts Options) error {
 		_, _ = fmt.Fprintf(bw, format, args...)
 		_ = bw.WriteByte('\n')
 	}
-	p(0, "digraph %s {", quote("exitctl"))
+	p(0, "digraph %s {", quote("lockinaudit"))
 	p(1, "rankdir=LR;")
 	p(1, `node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10];`)
 	p(1, `edge [fontname="Helvetica", fontsize=9];`)

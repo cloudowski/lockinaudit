@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/cloudowski/exitctl/internal/version"
+	"github.com/cloudowski/lockinaudit/internal/version"
 )
 
 func init() { register(newVersionCmd) }
@@ -50,7 +50,7 @@ func (app *App) runVersion(format string) error {
 		enc.SetIndent("", "  ")
 		return enc.Encode(v)
 	}
-	_, _ = fmt.Fprintf(app.Out, "exitctl        %s\n", v.Tool)
+	_, _ = fmt.Fprintf(app.Out, "lockinaudit    %s\n", v.Tool)
 	_, _ = fmt.Fprintf(app.Out, "catalog        %s (schema %s)\n", v.Catalog, v.CatalogSchema)
 	_, _ = fmt.Fprintf(app.Out, "rules          %s\n", v.Rules)
 	_, _ = fmt.Fprintf(app.Out, "result format  %s\n", v.ResultFormat)

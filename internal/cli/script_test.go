@@ -7,13 +7,13 @@ import (
 
 	"github.com/rogpeppe/go-internal/testscript"
 
-	"github.com/cloudowski/exitctl/internal/testutil"
+	"github.com/cloudowski/lockinaudit/internal/testutil"
 )
 
-// TestMain lets testscript run "exitctl" in-process.
+// TestMain lets testscript run "lockinaudit" in-process.
 func TestMain(m *testing.M) {
 	testscript.Main(m, map[string]func(){
-		"exitctl": func() { os.Exit(Execute()) },
+		"lockinaudit": func() { os.Exit(Execute()) },
 	})
 }
 

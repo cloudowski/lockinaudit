@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/result"
 )
 
 func covEv(path string, line int, kind model.SourceKind) []model.Evidence {
@@ -140,10 +140,10 @@ func TestCoverageText(t *testing.T) {
 		"  cloudformation   resources  dependents  example\n",
 		"    Acme::Thing            1           0  cfn/t.yaml:4\n",
 		"Unresolved inputs (4)\n",
-		"  module not available offline          terraform-aws-modules/vpc/aws  infra/net.tf\n",
-		"  chart not available offline           oci://charts.example/app       helm/Chart.yaml\n",
-		"  remote kustomize base not fetched     github.com/org/base//x?ref=v1  k8s/kustomization.yaml\n",
-		"  reference outside the scanned inputs  aws_iam_role.missing           infra/app.tf (2 times)\n",
+		"  module not available offline            terraform-aws-modules/vpc/aws  infra/net.tf\n",
+		"  chart not available offline             oci://charts.example/app       helm/Chart.yaml\n",
+		"  remote kustomize base not fetched       github.com/org/base//x?ref=v1  k8s/kustomization.yaml\n",
+		"  reference outside the inspected inputs  aws_iam_role.missing           infra/app.tf (2 times)\n",
 		"Unverified knowledge (1 type, 1 resource)\n",
 		"  matched only by draft catalog entries; not scored until the entries are verified\n",
 		"    aws_new_thing          1           0  infra/n.tf:2  aws.newthing\n",

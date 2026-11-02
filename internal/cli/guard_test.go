@@ -11,8 +11,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/result"
-	"github.com/cloudowski/exitctl/internal/testutil"
+	"github.com/cloudowski/lockinaudit/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/testutil"
 )
 
 // TestNoNetworkOrExecImports: internal packages never import network
@@ -67,9 +67,9 @@ func TestSecretsRedactedEverywhere(t *testing.T) {
 	dir := t.TempDir()
 	res := filepath.Join(dir, "result.json")
 	var so, se bytes.Buffer
-	if code := Run([]string{"scan", filepath.Join(root, "testdata", "fixtures", "secrets"), "--include-drafts",
+	if code := Run([]string{"inspect", filepath.Join(root, "testdata", "fixtures", "secrets"), "--include-drafts",
 		"--as-of", "2026-10-06", "--repo-name", "secrets", "--no-store", "--output", res}, &so, &se); code != 0 {
-		t.Fatalf("scan exited %d: %s", code, se.String())
+		t.Fatalf("inspect exited %d: %s", code, se.String())
 	}
 	doc, err := result.Load(res)
 	if err != nil {

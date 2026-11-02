@@ -17,19 +17,19 @@ import (
 	"github.com/santhosh-tekuri/jsonschema/v6"
 	"go.yaml.in/yaml/v3"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/schemas"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/schemas"
 )
 
 // FileName is the repository configuration file name.
-const FileName = ".exitctl.yaml"
+const FileName = ".lockinaudit.yaml"
 
 const schemaName = "config.schema.json"
 
 // Discover finds and loads the configuration: the explicit path when given
-// (relative paths resolve against cwd), else <scanRoot>/.exitctl.yaml, else
-// <cwd>/.exitctl.yaml, else the defaults (research R18).
-func Discover(scanRoot, cwd, explicit string) (Config, error) {
+// (relative paths resolve against cwd), else <inspectRoot>/.lockinaudit.yaml, else
+// <cwd>/.lockinaudit.yaml, else the defaults (research R18).
+func Discover(inspectRoot, cwd, explicit string) (Config, error) {
 	if explicit != "" {
 		p := explicit
 		if !filepath.IsAbs(p) && cwd != "" {
@@ -47,7 +47,7 @@ func Discover(scanRoot, cwd, explicit string) (Config, error) {
 		}
 		return loadAs(p, explicit)
 	}
-	for _, dir := range []string{scanRoot, cwd} {
+	for _, dir := range []string{inspectRoot, cwd} {
 		if dir == "" {
 			continue
 		}
@@ -79,7 +79,7 @@ func loadAs(path, display string) (Config, error) {
 	return cfg, nil
 }
 
-// fileConfig is the shape of .exitctl.yaml for typed decoding.
+// fileConfig is the shape of .lockinaudit.yaml for typed decoding.
 type fileConfig struct {
 	Version    int              `yaml:"version"`
 	RepoName   string           `yaml:"repo_name"`

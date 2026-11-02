@@ -5,7 +5,7 @@ data-model.md 3.5). Terraform security groups reference each other and form a tr
 Kubernetes objects form a plain chain. The golden files under `testdata/golden/` are the
 source of truth for exact output; this file documents intent.
 
-IDs below assume the repository name `cycles` (scanned directory name) and the native
+IDs below assume the repository name `cycles` (inspected directory name) and the native
 address formats of the Terraform and Kubernetes detectors (K8s: `<group>/<Kind>/<ns>/<name>`,
 empty group for core kinds).
 

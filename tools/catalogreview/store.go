@@ -13,7 +13,7 @@ import (
 
 	yaml "go.yaml.in/yaml/v3"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
 )
 
 // Statuses an entry can have (data-model.md 1.10).

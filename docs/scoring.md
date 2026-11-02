@@ -1,6 +1,6 @@
-# How exitctl scores lock-in
+# How lockinaudit scores lock-in
 
-exitctl turns what it finds in your repositories into one number, the **lock-in index**
+lockinaudit turns what it finds in your repositories into one number, the **lock-in index**
 (0 to 100), a **grade** (A to E), five **dimension scores**, a ranked list of **anchors**, and
 one **biggest lever**. This page explains every step, with the exact formulas the tool uses.
 
@@ -92,7 +92,7 @@ Stored per-node values (risk, weight, contribution) are rounded half-up to 4 dec
 ## Which nodes are scored
 
 - **Scored set S**: resources recognized by the catalog as a service or as neutral, plus
-  implied service nodes (services used from code but not declared in the scanned
+  implied service nodes (services used from code but not declared in the inspected
   infrastructure). Neutral resources usually have r = 0; they are in S because they are a real,
   known part of your estate.
 - **Unknown set U**: resources whose type the catalog does not recognize (`unknown`), or only
@@ -102,7 +102,7 @@ Stored per-node values (risk, weight, contribution) are rounded half-up to 4 dec
   `time_*`, `tls_*`), and metadata files. The catalog marks them with `scored: false`. They are
   in neither S nor U, so they change neither the index, the range, nor coverage, and they do not
   count as dependents of other resources. They still appear in the graph, marked
-  `(not scored)`, and `exitctl coverage` lists them. Before rules version 1.1.0 they counted as
+  `(not scored)`, and `lockinaudit coverage` lists them. Before rules version 1.1.0 they counted as
   neutral, which pulled the index of repositories with many lookups down.
 - **Application components** are never scored themselves. They make other nodes heavier
   (as dependents) and bring SDK findings to the services they use.
@@ -132,7 +132,7 @@ If S is empty (nothing recognized), no index is produced and the status is
 
 ### Coverage figures
 
-exitctl reports three coverage numbers:
+lockinaudit reports three coverage numbers:
 
 | Figure                | Formula                                                      | Used for            |
 | --------------------- | ------------------------------------------------------------ | ------------------- |
@@ -140,7 +140,7 @@ exitctl reports three coverage numbers:
 | `coverage.resources`  | recognized resources / (recognized + unknown resources)      | summary line        |
 | `coverage.weighted`   | coverage_w above                                             | grade confidence    |
 
-The summary also gives the number of unknown types; `exitctl coverage` lists them, sorted by
+The summary also gives the number of unknown types; `lockinaudit coverage` lists them, sorted by
 how many nodes depend on them, so you know which gaps matter most.
 
 ### Confidence and grade
@@ -264,7 +264,7 @@ never changes any score directly.
 ## Exceptions
 
 Sometimes a team keeps a managed service on purpose. Record that decision as an exception in
-`.exitctl.yaml` at the repository root:
+`.lockinaudit.yaml` at the repository root:
 
 ```yaml
 version: 1
@@ -299,7 +299,7 @@ that matches nothing). Findings matched by an active exception become `accepted`
 
 ## Configuration
 
-All scoring parameters can be overridden in the `scoring` section of `.exitctl.yaml`:
+All scoring parameters can be overridden in the `scoring` section of `.lockinaudit.yaml`:
 
 ```yaml
 version: 1
@@ -350,7 +350,7 @@ is checked against it before release.
   "70% of resource types recognized (14 of 20)"), resource coverage counts resources, and
   weighted coverage weighs each resource by its dependents and decides whether the grade is
   normal, provisional, or withheld. A very low type coverage means most resource types in the
-  scan are unknown or only matched by unreviewed catalog drafts; `exitctl coverage` lists
+  inspection are unknown or only matched by unreviewed catalog drafts; `lockinaudit coverage` lists
   them.
 
 **Dependents**

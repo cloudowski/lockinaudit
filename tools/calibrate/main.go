@@ -1,10 +1,10 @@
 // Command calibrate scores the calibration corpus (FR-041, SC-004, SC-005,
 // research R21) and writes a Markdown deviation report.
 //
-// It is a developer-only tool: it is not part of the exitctl binary and, unlike
+// It is a developer-only tool: it is not part of the lockinaudit binary and, unlike
 // everything under internal/, it uses the network (git fetch). For each corpus
 // entry it shallow-fetches the pinned commit into a cache directory, runs the
-// scan pipeline in-process with the built-in catalog and default scoring, and
+// inspection pipeline in-process with the built-in catalog and default scoring, and
 // compares the grade with the maintainer's expected band.
 //
 // Usage:
@@ -13,7 +13,7 @@
 //	                         [-cache DIR] [-include-drafts] [-only SUBSTRING]
 //
 // -include-drafts classifies with draft catalog entries as if they were
-// verified (the same as `exitctl --include-drafts`). It is off by default so
+// verified (the same as `lockinaudit --include-drafts`). It is off by default so
 // the gate measures what users get, but while the built-in catalog is still
 // mostly drafts it is needed to get meaningful grades.
 //
@@ -45,13 +45,13 @@ import (
 
 	"go.yaml.in/yaml/v3"
 
-	catalogdata "github.com/cloudowski/exitctl/catalog"
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/config"
-	"github.com/cloudowski/exitctl/internal/engine"
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/scanner"
-	"github.com/cloudowski/exitctl/internal/source"
+	catalogdata "github.com/cloudowski/lockinaudit/catalog"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/config"
+	"github.com/cloudowski/lockinaudit/internal/engine"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/scanner"
+	"github.com/cloudowski/lockinaudit/internal/source"
 )
 
 // Gate thresholds (SC-004, SC-005).
@@ -98,8 +98,8 @@ type Row struct {
 	Grade      string
 	Confidence string
 	Coverage   float64
-	Scanned    bool   // the pipeline ran (Coverage is meaningful)
-	Err        string // fetch or scan failure
+	Inspected  bool   // the pipeline ran (Coverage is meaningful)
+	Err        string // fetch or inspection failure
 	Deviation  int    // grades outside the band; valid when HasDev
 	HasDev     bool
 }
@@ -124,9 +124,9 @@ func main() {
 func run(args []string, stdout, stderr io.Writer) int {
 	fs := flag.NewFlagSet("calibrate", flag.ContinueOnError)
 	fs.SetOutput(stderr)
-	defCache := filepath.Join(os.TempDir(), "exitctl-calibrate")
+	defCache := filepath.Join(os.TempDir(), "lockinaudit-calibrate")
 	if d, err := os.UserCacheDir(); err == nil {
-		defCache = filepath.Join(d, "exitctl-calibrate")
+		defCache = filepath.Join(d, "lockinaudit-calibrate")
 	}
 	corpusPath := fs.String("corpus", "calibration/corpus.yaml", "corpus file")
 	cacheDir := fs.String("cache", defCache, "directory for fetched repositories")
@@ -174,7 +174,7 @@ func run(args []string, stdout, stderr io.Writer) int {
 			rows = append(rows, row)
 			continue
 		}
-		scanRepo(ctx, &row, dir, ix, cfg, asOf)
+		inspectRepo(ctx, &row, dir, ix, cfg, asOf)
 		rows = append(rows, row)
 	}
 
@@ -247,23 +247,23 @@ func builtinIndex(drafts bool) (*catalog.Index, error) {
 		return nil, fmt.Errorf("built-in catalog: %v", err)
 	}
 	if len(probs) > 0 {
-		return nil, fmt.Errorf("built-in catalog is invalid (%d problems); run 'exitctl catalog validate'", len(probs))
+		return nil, fmt.Errorf("built-in catalog is invalid (%d problems); run 'lockinaudit catalog validate'", len(probs))
 	}
 	return catalog.NewIndex(cat, catalog.IndexOptions{IncludeDrafts: drafts}), nil
 }
 
-// scanRepo runs the same pipeline as `exitctl scan <dir>` with default
-// configuration (a repo's own .exitctl.yaml is ignored on purpose).
-func scanRepo(ctx context.Context, row *Row, dir string, ix *catalog.Index, cfg config.Config, asOf string) {
+// inspectRepo runs the same pipeline as `lockinaudit inspect <dir>` with default
+// configuration (a repo's own .lockinaudit.yaml is ignored on purpose).
+func inspectRepo(ctx context.Context, row *Row, dir string, ix *catalog.Index, cfg config.Config, asOf string) {
 	repo := model.DetectRepoName(dir, "")
 	facts, err := scanner.Collect(ctx, cfg.Ignore, source.Options{Repo: repo, Root: dir, Catalog: ix})
 	if err != nil {
-		row.Err = "scan failed: " + err.Error()
+		row.Err = "inspection failed: " + err.Error()
 		return
 	}
 	an := engine.Analyze(facts, ix, cfg, []engine.Input{{Repo: repo, AsOf: asOf}})
 	a := an.Doc.Analysis
-	row.Scanned = true
+	row.Inspected = true
 	row.Index = a.Index
 	row.Grade = a.Grade
 	row.Confidence = a.Confidence
@@ -398,7 +398,7 @@ func Summarize(rows []Row) Summary {
 		if r.Repo.ExpectedBandStatus != "confirmed" {
 			s.Unconfirmed++
 		}
-		if r.Scanned {
+		if r.Inspected {
 			cov = append(cov, r.Coverage)
 		}
 		if !r.HasDev {
@@ -460,7 +460,7 @@ type reportMeta struct {
 
 func writeReport(w io.Writer, m reportMeta, rows []Row, s Summary, failures []string) {
 	p := func(format string, a ...any) { _, _ = fmt.Fprintf(w, format+"\n", a...) }
-	p("# exitctl calibration report")
+	p("# lockinaudit calibration report")
 	p("")
 	p("- Date: %s", m.Date)
 	filter, drafts := "", "excluded"
@@ -489,7 +489,7 @@ func writeReport(w io.Writer, m reportMeta, rows []Row, s Summary, failures []st
 		if r.Confidence != "" {
 			conf = r.Confidence
 		}
-		if r.Scanned {
+		if r.Inspected {
 			cov = pct(r.Coverage)
 		}
 		if r.HasDev {

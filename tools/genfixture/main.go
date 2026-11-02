@@ -1,5 +1,5 @@
 // Command genfixture writes a synthetic repository for performance testing
-// (T097, SC-001). Dev-only: it is not part of the exitctl binary.
+// (T097, SC-001). Dev-only: it is not part of the lockinaudit binary.
 //
 //	go run ./tools/genfixture -out /tmp/perf -resources 5000 -files 20000
 //
@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cloudowski/exitctl/tools/genfixture/fixture"
+	"github.com/cloudowski/lockinaudit/tools/genfixture/fixture"
 )
 
 func main() {

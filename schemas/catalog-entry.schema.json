@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:exitctl:schema:catalog-entry:1.0",
-  "title": "exitctl catalog entry (schema 1.0)",
+  "$id": "urn:lockinaudit:schema:catalog-entry:1.0",
+  "title": "lockinaudit catalog entry (schema 1.0)",
   "description": "One catalog file. Referential integrity (IDs exist, no alias cycles, one service per resource type, maintainer-only recommended) is checked after schema validation. See data-model.md Part 1.",
   "type": "object",
   "required": ["schema", "kind"],

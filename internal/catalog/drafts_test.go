@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/testutil"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/testutil"
 )
 
 // TestDraftTraitsAndAlternativesUnused: only verified entries affect results

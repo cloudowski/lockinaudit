@@ -1,4 +1,4 @@
-// Package engine is the single analysis entry point used by scan and merge:
+// Package engine is the single analysis entry point used by inspect and merge:
 // facts -> graph (catalog) -> scoring (config) -> result document.
 package engine
 
@@ -6,13 +6,13 @@ import (
 	"slices"
 	"sort"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/config"
-	"github.com/cloudowski/exitctl/internal/graph"
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/result"
-	"github.com/cloudowski/exitctl/internal/scoring"
-	"github.com/cloudowski/exitctl/internal/version"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/config"
+	"github.com/cloudowski/lockinaudit/internal/graph"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/scoring"
+	"github.com/cloudowski/lockinaudit/internal/version"
 )
 
 // maxDependentsListed bounds the per-node dependents lists stored in the
@@ -197,9 +197,9 @@ func Analyze(facts model.Facts, ix *catalog.Index, cfg config.Config, inputs []I
 }
 
 // ReferenceDate returns the reference date for exception expiry: the latest
-// as_of among the inputs. A scan has one as_of for all its paths (--as-of,
+// as_of among the inputs. An inspection has one as_of for all its paths (--as-of,
 // else today); a merge re-evaluates exceptions as of the newest input, so a
-// merged result never treats an exception as active that the newest scan
+// merged result never treats an exception as active that the newest inspection
 // already saw expired. "" when no input carries a date (expiry is then not
 // evaluated).
 func ReferenceDate(inputs []Input) string {

@@ -2,16 +2,16 @@
 # tag "vX.Y.Z" is pushed. Local dry run: goreleaser release --snapshot --clean
 version: 2
 
-project_name: exitctl
+project_name: lockinaudit
 
 before:
   hooks:
     - go mod tidy -diff
 
 builds:
-  - id: exitctl
-    main: ./cmd/exitctl
-    binary: exitctl
+  - id: lockinaudit
+    main: ./cmd/lockinaudit
+    binary: lockinaudit
     env:
       - CGO_ENABLED=0
     goos: [linux, darwin]
@@ -19,17 +19,17 @@ builds:
     flags:
       - -trimpath
     ldflags:
-      - -s -w -X github.com/cloudowski/exitctl/internal/version.Tool={{ .Version }}
+      - -s -w -X github.com/cloudowski/lockinaudit/internal/version.Tool={{ .Version }}
       # Support address shown at the bottom of HTML and Markdown reports (FR-074).
-      - -X github.com/cloudowski/exitctl/internal/version.SupportEmail=tomasz@cloudowski.com
+      - -X github.com/cloudowski/lockinaudit/internal/version.SupportEmail=tomasz@cloudowski.com
     # Reproducible binaries: the timestamp comes from the commit, not the build.
     mod_timestamp: "{{ .CommitTimestamp }}"
 
 archives:
-  - id: exitctl
+  - id: lockinaudit
     formats: [tar.gz]
     # No version in the name, so releases/latest/download/<name> is a stable URL.
-    name_template: "exitctl_{{ .Os }}_{{ .Arch }}"
+    name_template: "lockinaudit_{{ .Os }}_{{ .Arch }}"
     files:
       - LICENSE
       - NOTICE
@@ -62,7 +62,7 @@ changelog:
 release:
   github:
     owner: cloudowski
-    name: exitctl
+    name: lockinaudit
   # v0.x and tags with a suffix (v1.0.0-rc.1) are marked as pre-releases.
   prerelease: auto
 
@@ -88,20 +88,20 @@ sboms:
     args: ["$artifact", "--output", "spdx-json=$document"]
 
 # Homebrew cask (the replacement for the deprecated "brews" formulas), pushed to
-# cloudowski/homebrew-tap (Casks/exitctl.rb).
-# Install: brew install cloudowski/tap/exitctl
+# cloudowski/homebrew-tap (Casks/lockinaudit.rb).
+# Install: brew install cloudowski/tap/lockinaudit
 # Needs the repository secret HOMEBREW_TAP_TOKEN (see release workflow).
 homebrew_casks:
-  - name: exitctl
+  - name: lockinaudit
     repository:
       owner: cloudowski
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
     directory: Casks
-    homepage: https://github.com/cloudowski/exitctl
+    homepage: https://github.com/cloudowski/lockinaudit
     description: "Measure cloud infrastructure vendor lock-in from your repositories"
     license: Apache-2.0
-    binaries: [exitctl]
+    binaries: [lockinaudit]
     # Pre-releases (tags with a suffix) do not update the cask.
     skip_upload: auto
     commit_author:
@@ -112,5 +112,5 @@ homebrew_casks:
       post:
         install_steps: |
           on_macos do
-            run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{ .StagedPath }}/exitctl"]
+            run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{ .StagedPath }}/lockinaudit"]
           end

@@ -1,4 +1,4 @@
-# exitctl calibration corpus (T098, FR-041, SC-004, SC-005, research R21)
+# lockinaudit calibration corpus (T098, FR-041, SC-004, SC-005, research R21)
 #
 # Consumed by the developer-only tool `go run ./tools/calibrate --corpus calibration/corpus.yaml`
 # (T099). The tool may use the network: it clones each repository at the pinned commit into a
@@ -22,7 +22,7 @@
 #                         reviewed by a maintainer. "confirmed" = a maintainer reviewed the repo
 #                         and agrees with the band. The calibration gate is only meaningful once
 #                         every entry is confirmed: the MAINTAINER MUST CONFIRM EXPECTED BANDS.
-#   clouds                Providers expected in the scan: aws, gcp, azure, oci, kubernetes.
+#   clouds                Providers expected in the inspection: aws, gcp, azure, oci, kubernetes.
 #   notes                 What the repository contains and why the band was chosen.
 #
 # Grade bands changed on 2026-10-11 (A 0-9, B 10-24, C 25-39, D 40-54, E 55-100), so every
@@ -150,7 +150,7 @@ repos:
     expected_band_status: confirmed
     clouds: [azure, kubernetes]
     notes: >-
-      AKS Store demo: Kubernetes manifests and Helm, with Terraform (and Bicep, not scanned)
+      AKS Store demo: Kubernetes manifests and Helm, with Terraform (and Bicep, not inspected)
       for AKS, Cosmos DB, Service Bus, Azure OpenAI, Key Vault. In-cluster RabbitMQ/MongoDB are
       the default, managed services are optional.
       Band changed from C-D to A-B after the calibration run of 2026-10-07: index 16, grade A.

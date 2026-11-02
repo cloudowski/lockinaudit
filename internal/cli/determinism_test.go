@@ -8,11 +8,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/testutil"
+	"github.com/cloudowski/lockinaudit/internal/testutil"
 )
 
 // Determinism suite (T095, SC-003, R15). Every fixture under
-// testdata/fixtures is scanned and rendered twice per output format and the
+// testdata/fixtures is inspected and rendered twice per output format and the
 // bytes are compared. Merge input-order independence is covered by
 // TestMergePermutations (merge_test.go); `make determinism` runs both.
 
@@ -54,16 +54,16 @@ func determinismFixtures(t *testing.T) []string {
 	return out
 }
 
-// detScan runs `scan --format json` on path and returns stdout and the exit
+// detInspect runs `inspect --format json` on path and returns stdout and the exit
 // code. Exit 2 ("nothing scored") is accepted; its output is still compared.
-func detScan(t *testing.T, path, repo, resultFile string) ([]byte, int) {
+func detInspect(t *testing.T, path, repo, resultFile string) ([]byte, int) {
 	t.Helper()
 	var so, se bytes.Buffer
-	code := Run([]string{"scan", path, "--format", "json",
+	code := Run([]string{"inspect", path, "--format", "json",
 		"--include-drafts", "--as-of", "2026-10-06", "--repo-name", repo,
 		"--emoji", "never", "--no-color", "--no-store", "--output", resultFile}, &so, &se)
 	if code != 0 && code != ExitNothing {
-		t.Fatalf("scan %s exited %d: %s", path, code, se.String())
+		t.Fatalf("inspect %s exited %d: %s", path, code, se.String())
 	}
 	return so.Bytes(), code
 }
@@ -103,11 +103,11 @@ func TestDeterminism(t *testing.T) {
 			var code int
 			js := testutil.RunTwice(t, func() []byte {
 				var b []byte
-				b, code = detScan(t, abs, repo, res)
+				b, code = detInspect(t, abs, repo, res)
 				return b
 			})
 			if len(js) == 0 {
-				t.Fatal("scan --format json produced no output")
+				t.Fatal("inspect --format json produced no output")
 			}
 			assertNoPathLeak(t, js, root, dir)
 			if code == ExitNothing {
@@ -133,7 +133,7 @@ func TestDeterminism(t *testing.T) {
 }
 
 // TestDeterminismPaths: the result does not depend on the working directory
-// or on whether the scanned path is absolute or relative.
+// or on whether the inspected path is absolute or relative.
 func TestDeterminismPaths(t *testing.T) {
 	root := testutil.RepoRoot(t)
 	for _, fx := range determinismFixtures(t) {
@@ -156,14 +156,14 @@ func TestDeterminismPaths(t *testing.T) {
 			var first []byte
 			for i, v := range variants {
 				t.Chdir(v.cwd)
-				js, _ := detScan(t, v.path, repo, filepath.Join(dir, v.name+".json"))
+				js, _ := detInspect(t, v.path, repo, filepath.Join(dir, v.name+".json"))
 				assertNoPathLeak(t, js, root, dir, other)
 				if i == 0 {
 					first = js
 					continue
 				}
 				if !bytes.Equal(first, js) {
-					t.Fatalf("scan JSON differs between %s and %s:\n--- %s ---\n%s\n--- %s ---\n%s",
+					t.Fatalf("inspect JSON differs between %s and %s:\n--- %s ---\n%s\n--- %s ---\n%s",
 						variants[0].name, v.name, variants[0].name, first, v.name, js)
 				}
 			}

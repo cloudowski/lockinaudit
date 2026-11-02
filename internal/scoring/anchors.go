@@ -5,8 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/graph"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/graph"
 )
 
 // Anchor is a scored node ranked by contribution (data-model.md 4.5).

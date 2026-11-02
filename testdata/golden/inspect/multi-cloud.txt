@@ -1,4 +1,4 @@
-Offline, read-only scan: 9 Terraform resources, 3 CloudFormation resources, 2 K8s objects
+Offline, read-only inspection: 9 Terraform resources, 3 CloudFormation resources, 2 K8s objects
   Lock-in index  48/100  grade D
   technical █████░░░░░  data ██░░░░░░░░  operational ██░░░░░░░░  skills ██░░░░░░░░
   economic: not assessed
@@ -9,9 +9,9 @@ Offline, read-only scan: 9 Terraform resources, 3 CloudFormation resources, 2 K8
   3. OrdersTopic                                1  Apache Kafka, NATS +1
   4. azurerm_servicebus_namespace.bus           1  NATS, RabbitMQ +1
   5. google_pubsub_topic.orders                 1  Apache Kafka, Apache Pulsar +2
-  ... 8 more anchors: exitctl scan --all
+  ... 8 more anchors: lockinaudit inspect --all
 
   Biggest lever: Cloud Spanner -> CockroachDB lowers the index by 11 pts
   Coverage: 100% of types, 100% of resources
-  Explain #1: exitctl explain 1  |  Report: exitctl report --format html --open
-  exitctl 0.1.0-dev · catalog 2026.10.1 · rules 1.1.0 · config 8d36fc36 (draft catalog)
+  Explain #1: lockinaudit explain 1  |  Report: lockinaudit report --format html --open
+  lockinaudit 0.2.0-dev · catalog 2026.10.1 · rules 1.1.0 · config 8d36fc36 (draft catalog)

@@ -63,7 +63,7 @@ func TestMedian(t *testing.T) {
 
 func row(grade, band string, cov float64) Row {
 	b, _ := ParseBand(band)
-	r := Row{Band: b, Grade: grade, Coverage: cov, Scanned: true, Repo: Repo{ExpectedBandStatus: "confirmed"}}
+	r := Row{Band: b, Grade: grade, Coverage: cov, Inspected: true, Repo: Repo{ExpectedBandStatus: "confirmed"}}
 	if g := gradePos(grade); g >= 0 {
 		r.Deviation, r.HasDev = Deviation(g, b), true
 	}

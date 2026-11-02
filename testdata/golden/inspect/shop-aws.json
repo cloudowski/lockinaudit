@@ -1,8 +1,8 @@
 {
-  "format": "exitctl.result/v1",
+  "format": "lockinaudit.result/v1",
   "kind": "result",
   "versions": {
-    "tool": "0.1.0-dev",
+    "tool": "0.2.0-dev",
     "catalog": "2026.10.1",
     "catalog_schema": "1.0",
     "rules": "1.1.0",
@@ -15,7 +15,7 @@
       "repo": "shop-aws",
       "as_of": "2026-10-06",
       "versions": {
-        "tool": "0.1.0-dev",
+        "tool": "0.2.0-dev",
         "catalog": "2026.10.1",
         "catalog_schema": "1.0",
         "rules": "1.1.0",

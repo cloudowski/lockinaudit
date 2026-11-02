@@ -5,7 +5,7 @@ provider: generic
 # Terraform types that only exist in state or on the machine running
 # Terraform (random values, local files and keys, sleeps, archives) or that
 # read data at plan time. They deploy nothing in a cloud. null_resource and
-# terraform_data may run provisioner scripts, which exitctl cannot see.
+# terraform_data may run provisioner scripts, which lockinaudit cannot see.
 resource_types:
   terraform:
   - random_*

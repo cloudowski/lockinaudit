@@ -1,5 +1,5 @@
 // Command catalogreview is a local, dev-only web tool for maintainers to
-// review the exitctl catalog: change entry status (draft, verified,
+// review the lockinaudit catalog: change entry status (draft, verified,
 // deprecated), mark recommended alternatives, remove alternative mappings
 // from a service, and hide an alternative everywhere by deprecating it.
 //
@@ -24,7 +24,7 @@ import (
 	"slices"
 	"time"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
 )
 
 func main() {

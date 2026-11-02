@@ -3,10 +3,10 @@ package scoring
 import (
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/config"
-	"github.com/cloudowski/exitctl/internal/graph"
-	"github.com/cloudowski/exitctl/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/config"
+	"github.com/cloudowski/lockinaudit/internal/graph"
+	"github.com/cloudowski/lockinaudit/internal/model"
 )
 
 func ev(repo, path string, line int) model.Evidence {

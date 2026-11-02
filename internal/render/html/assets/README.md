@@ -11,4 +11,4 @@ Downloaded once at development time (2026-10-06). The files are embedded with `g
 To upgrade: download the new `dist/cytoscape.min.js` and `LICENSE`, update this table with
 `shasum -a 256`, and regenerate the HTML golden files (`go test ./internal/render/html/ -update`).
 
-`report.css` and `report.js` are exitctl's own files.
+`report.css` and `report.js` are lockinaudit's own files.

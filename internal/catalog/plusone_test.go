@@ -7,9 +7,9 @@ import (
 	"testing"
 	"testing/fstest"
 
-	catalogdata "github.com/cloudowski/exitctl/catalog"
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/testutil"
+	catalogdata "github.com/cloudowski/lockinaudit/catalog"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/testutil"
 )
 
 // overlayOn copies every file of base and then the files of the given

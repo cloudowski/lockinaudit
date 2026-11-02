@@ -1,4 +1,4 @@
-digraph "exitctl" {
+digraph "lockinaudit" {
   rankdir=LR;
   node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10];
   edge [fontname="Helvetica", fontsize=9];

@@ -5,15 +5,15 @@ import (
 	"runtime"
 	"sync"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/walk"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/walk"
 )
 
 // Options are shared by all detectors for one repository.
 type Options struct {
 	Repo string // repository identity used in IDs and evidence
-	Root string // absolute path of the scanned root
+	Root string // absolute path of the inspected root
 	// HelmValues maps a chart directory (repo-relative, '/' separators) to
 	// extra values files (paths relative to the root).
 	HelmValues map[string][]string
@@ -42,7 +42,7 @@ func FailedSource(repo, path string, kind model.SourceKind, note string) model.S
 
 // RunAll runs detectors in a bounded worker pool, then runs the dependent
 // detectors (which receive the package uses found in the first stage), and
-// returns the sorted union of facts. A detector error never aborts the scan:
+// returns the sorted union of facts. A detector error never aborts the inspection:
 // it is recorded as a failed source named after the detector.
 func RunAll(ctx context.Context, first, dependent []Detector, idx walk.Index, opts Options) model.Facts {
 	var all model.Facts

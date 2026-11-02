@@ -7,8 +7,8 @@ import (
 
 func TestExceptionsLoad(t *testing.T) {
 	// An empty reason is not a configuration error: the exception is
-	// reported as invalid and ignored when scanning (spec US7 scenario 3).
-	cfg, err := Parse(".exitctl.yaml", []byte(`version: 1
+	// reported as invalid and ignored when inspecting (spec US7 scenario 3).
+	cfg, err := Parse(".lockinaudit.yaml", []byte(`version: 1
 exceptions:
   - id: keep-cognito
     select: {service: aws.cognito}
@@ -35,7 +35,7 @@ func TestExceptionsRejected(t *testing.T) {
 		{"bad date", "version: 1\nexceptions:\n  - {id: a, select: {service: s}, reason: r, owner: o, expires: 2026-13-01}\n", "/exceptions/0/expires"},
 	}
 	for _, c := range cases {
-		_, err := Parse(".exitctl.yaml", []byte(c.doc))
+		_, err := Parse(".lockinaudit.yaml", []byte(c.doc))
 		if err == nil {
 			t.Errorf("%s: accepted", c.name)
 			continue

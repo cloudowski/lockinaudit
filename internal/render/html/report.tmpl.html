@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<meta name="generator" content="exitctl">
+<meta name="generator" content="lockinaudit">
 <title>Lock-in report{{if .Repos}}: {{.Repos}}{{end}}</title>
 <style>
 {{.CSS}}
@@ -13,7 +13,7 @@
 <body>
 <header class="topbar">
   <div class="wrap">
-    <div class="brand">exitctl <span>lock-in report</span></div>
+    <div class="brand">lockinaudit <span>lock-in report</span></div>
     <nav aria-label="Sections">
       <a href="#summary">Summary</a>
       <a href="#dimensions">Dimensions</a>
@@ -212,7 +212,7 @@
       <div><div class="n">{{.Coverage.Weighted}}</div><div class="l">weighted coverage</div></div>
     </div>
     {{- if .Coverage.UnknownTypes}}
-    <p class="muted">{{.Coverage.UnknownTypes}} resource {{if eq .Coverage.UnknownTypes 1}}type is{{else}}types are{{end}} not in the catalog yet; run <code>exitctl coverage</code> for the list.</p>
+    <p class="muted">{{.Coverage.UnknownTypes}} resource {{if eq .Coverage.UnknownTypes 1}}type is{{else}}types are{{end}} not in the catalog yet; run <code>lockinaudit coverage</code> for the list.</p>
     {{- end}}
     {{- if .Coverage.Unverified}}
     <p class="muted">{{.Coverage.Unverified}} {{if eq .Coverage.Unverified 1}}match comes{{else}}matches come{{end}} from draft catalog entries.</p>

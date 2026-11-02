@@ -1,6 +1,6 @@
 # Catalog neutrality rules
 
-These rules govern which alternatives enter the exitctl catalog and how they
+These rules govern which alternatives enter the lockinaudit catalog and how they
 are shown (FR-017). They apply to every contribution: maintainer, community,
 vendor, and LLM-drafted entries alike.
 

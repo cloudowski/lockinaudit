@@ -3,11 +3,11 @@ package packages
 import (
 	"strings"
 
-	"github.com/cloudowski/exitctl/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/model"
 )
 
-// purlPackage maps a package URL to an ecosystem, an exitctl package name,
-// and a version. Only the ecosystems exitctl matches are returned.
+// purlPackage maps a package URL to an ecosystem, an lockinaudit package name,
+// and a version. Only the ecosystems lockinaudit matches are returned.
 func purlPackage(purl string) (model.Ecosystem, string, string, bool) {
 	typ, ns, name, ok := parsePURL(purl)
 	if !ok {

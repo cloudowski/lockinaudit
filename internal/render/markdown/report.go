@@ -1,5 +1,5 @@
 // Package markdown renders the Markdown report (contracts/cli.md
-// "exitctl report"): the same sections as the HTML report, without the
+// "lockinaudit report"): the same sections as the HTML report, without the
 // interactive graph, with a plain text tree of the top anchors' dependents.
 package markdown
 
@@ -10,12 +10,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/graph"
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/render/terminal"
-	"github.com/cloudowski/exitctl/internal/result"
-	"github.com/cloudowski/exitctl/internal/version"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/graph"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/render/terminal"
+	"github.com/cloudowski/lockinaudit/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/version"
 )
 
 // TreeAnchors is the number of top anchors whose dependents tree is shown.
@@ -94,7 +94,7 @@ func (r *report) heading(s string) {
 }
 
 func (r *report) title() {
-	r.line("# exitctl lock-in report")
+	r.line("# lockinaudit lock-in report")
 	var repos []string
 	for _, in := range r.doc.Inputs {
 		if in.Repo != "" {
@@ -196,7 +196,7 @@ func (r *report) summaryParagraph(idx int) string {
 }
 
 func coverageSentence(c result.Coverage) string {
-	return fmt.Sprintf("The catalog recognizes %s of resource types and %s of resources in the scanned inputs.",
+	return fmt.Sprintf("The catalog recognizes %s of resource types and %s of resources in the inspected inputs.",
 		pct(c.Types), pct(c.Resources))
 }
 
@@ -478,7 +478,7 @@ func (r *report) coverage() {
 	r.line(fmt.Sprintf("- Resources recognized: %s", pct(c.Resources)))
 	r.line(fmt.Sprintf("- Weighted coverage: %s", pct(c.Weighted)))
 	if c.UnknownTypes > 0 {
-		r.line(fmt.Sprintf("- Types not in the catalog: %d (exitctl coverage lists them)", c.UnknownTypes))
+		r.line(fmt.Sprintf("- Types not in the catalog: %d (lockinaudit coverage lists them)", c.UnknownTypes))
 	}
 	if len(c.UnverifiedMatches) > 0 {
 		r.line(fmt.Sprintf("- Matched by draft catalog entries: %d", len(c.UnverifiedMatches)))
@@ -553,7 +553,7 @@ func gapWording(k model.GapKind) string {
 	case model.GapUnresolvedChart:
 		return "Chart not available offline"
 	case model.GapUnresolvedReference:
-		return "Reference to an object outside the scanned inputs"
+		return "Reference to an object outside the inspected inputs"
 	case model.GapParseFailure:
 		return "File could not be parsed"
 	case model.GapRemoteKustomize:
@@ -625,7 +625,7 @@ func (r *report) footer() string {
 		fp = fp[:8]
 	}
 	const s = " · "
-	l := "exitctl " + tool + s + "catalog " + v.Catalog + s + "rules " + rules + s + "config " + fp
+	l := "lockinaudit " + tool + s + "catalog " + v.Catalog + s + "rules " + rules + s + "config " + fp
 	if v.CustomScoring {
 		l += " (custom scoring)"
 	}

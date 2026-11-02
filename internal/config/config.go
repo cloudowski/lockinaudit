@@ -1,8 +1,8 @@
-// Package config loads and validates .exitctl.yaml and holds the scoring
+// Package config loads and validates .lockinaudit.yaml and holds the scoring
 // configuration (data-model.md 4.1 and Part 6).
 package config
 
-import "github.com/cloudowski/exitctl/internal/catalog"
+import "github.com/cloudowski/lockinaudit/internal/catalog"
 
 // Band maps an index range to a grade.
 type Band struct {

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:exitctl:schema:config:v1",
-  "title": "exitctl repository configuration (.exitctl.yaml)",
+  "$id": "urn:lockinaudit:schema:config:v1",
+  "title": "lockinaudit repository configuration (.lockinaudit.yaml)",
   "type": "object",
   "required": ["version"],
   "additionalProperties": false,

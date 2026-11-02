@@ -1,4 +1,4 @@
-// Package catalogdata embeds the built-in exitctl knowledge catalog (data
+// Package catalogdata embeds the built-in lockinaudit knowledge catalog (data
 // only; loading and validation live in internal/catalog).
 package catalogdata
 

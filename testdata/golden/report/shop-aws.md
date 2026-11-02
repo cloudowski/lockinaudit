@@ -1,4 +1,4 @@
-# exitctl lock-in report
+# lockinaudit lock-in report
 
 Repository: shop-aws
 
@@ -6,7 +6,7 @@ Repository: shop-aws
 
 **Grade C** - lock-in index **33/100**
 
-The lock-in index is 33 out of 100, grade C. Lock-in is moderate: some provider-specific services hold application data or logic, so changing provider is a planned project. The top anchor is aws_dynamodb_table.orders with 4 dependent resources and SDK usage in 3 files. Replacing aws.vpc with Scaleway is the biggest single lever and lowers the index by 9 points. The catalog recognizes 100% of resource types and 100% of resources in the scanned inputs.
+The lock-in index is 33 out of 100, grade C. Lock-in is moderate: some provider-specific services hold application data or logic, so changing provider is a planned project. The top anchor is aws_dynamodb_table.orders with 4 dependent resources and SDK usage in 3 files. Replacing aws.vpc with Scaleway is the biggest single lever and lowers the index by 9 points. The catalog recognizes 100% of resource types and 100% of resources in the inspected inputs.
 
 ## Dimensions
 
@@ -458,7 +458,7 @@ aws_cognito_user_pool.main
 
 Gaps:
 
-- Reference to an object outside the scanned inputs: `shop-aws//#networking.k8s.io/IngressClass/_/alb` in `k8s/ingress.yaml`
+- Reference to an object outside the inspected inputs: `shop-aws//#networking.k8s.io/IngressClass/_/alb` in `k8s/ingress.yaml`
 
 ## Exceptions
 
@@ -470,4 +470,4 @@ Exit cost, contracts, and an exit plan: Exit Readiness
 
 Support: support@example.com
 
-exitctl 0.1.0-dev · catalog 2026.10.1 · rules 1.1.0 · config 8d36fc36 (draft catalog)
+lockinaudit 0.2.0-dev · catalog 2026.10.1 · rules 1.1.0 · config 8d36fc36 (draft catalog)

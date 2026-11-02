@@ -1,7 +1,7 @@
-# The exitctl dependency graph
+# The lockinaudit dependency graph
 
-Every scan builds one dependency graph. It connects infrastructure resources, Kubernetes
-objects, and application code, and it drives most of what exitctl reports: resource weights,
+Every inspection builds one dependency graph. It connects infrastructure resources, Kubernetes
+objects, and application code, and it drives most of what lockinaudit reports: resource weights,
 anchors, blast radius, migration waves, and lock-in chains. This page explains what the graph
 contains and how each derived view is computed.
 
@@ -13,7 +13,7 @@ For how the graph feeds the index, see [scoring.md](./scoring.md).
 | ----------------- | ----------------------------------------------------------------------- | ----------------------------------------------- |
 | `resource`        | anything declared in a source: Terraform, CloudFormation, Kubernetes, container images, CI actions | `shop//infra#aws_dynamodb_table.orders`         |
 | `component`       | an application unit: a directory with a dependency manifest             | `shop//services/orders#component`               |
-| `implied_service` | a provider service used by code or bound from Kubernetes, but not declared in any scanned infrastructure | `implied//aws.dynamodb`                         |
+| `implied_service` | a provider service used by code or bound from Kubernetes, but not declared in any inspected infrastructure | `implied//aws.dynamodb`                         |
 
 Every resource also has a **class** from the catalog:
 
@@ -44,7 +44,7 @@ IDs never contain absolute paths, so they are the same on every machine.
 ### Identity merge
 
 The same thing is often declared more than once: a Kubernetes object in a raw manifest and in a
-rendered chart, or a bucket in two repositories. exitctl merges such declarations into one node
+rendered chart, or a bucket in two repositories. lockinaudit merges such declarations into one node
 when any of these match:
 
 - the canonical ID;
@@ -95,7 +95,7 @@ SDK detection finds which components use which services (from service-specific p
 dependency manifests and from import or usage patterns in source files). For each
 (component, service) pair:
 
-1. If resources of that service exist in the scan, the component gets a `usage` edge to each of
+1. If resources of that service exist in the inspection, the component gets a `usage` edge to each of
    them. Resources in the component's own repository are preferred; when it has none,
    resources of that service in other merged repositories are used.
 2. If no resource of that service exists, the component gets a `usage` edge to the **implied
@@ -122,13 +122,13 @@ it, visiting neighbors in ID order. The tree therefore shows the shortest depend
 every dependent to N, and it is the same on every run.
 
 ```sh
-exitctl graph aws_dynamodb_table.orders --blast-radius
-exitctl explain aws_dynamodb_table.orders
+lockinaudit graph aws_dynamodb_table.orders --blast-radius
+lockinaudit explain aws_dynamodb_table.orders
 ```
 
 ## Cycles and migration waves
 
-Real Terraform and Kubernetes graphs contain cycles. exitctl finds the strongly connected
+Real Terraform and Kubernetes graphs contain cycles. lockinaudit finds the strongly connected
 components (Tarjan's algorithm). A component with more than one member is a cycle: its nodes
 can only move together, and they are reported as a "must move together" group with a shared
 `scc` number. Every other node forms a unit on its own. Collapsing the cycles leaves a graph
@@ -150,7 +150,7 @@ labeled as such.
 Waves are in the JSON result (`analysis.waves`), in `explain`, and in the graph view:
 
 ```sh
-exitctl graph --waves
+lockinaudit graph --waves
 ```
 
 ## Lock-in chains
@@ -170,7 +170,7 @@ so the whole path tends to move as one.
   IDs.
 - Only chains of at least two units are reported, longest first.
 
-`exitctl explain <resource>` shows up to three chains that pass through the resource.
+`lockinaudit explain <resource>` shows up to three chains that pass through the resource.
 
 ## Grouping
 
@@ -189,16 +189,16 @@ changes only the presentation; the graph data and all scores stay the same.
   and input order. Each group carries the highest risk of its members and the sum of their
   contributions. In the HTML report, groups are expandable.
 
-`exitctl graph --expand` turns grouping off.
+`lockinaudit graph --expand` turns grouping off.
 
 ## Export and merge
 
 ```sh
-exitctl graph --format tree                       # terminal (default)
-exitctl graph --format dot  -o graph.dot
-exitctl graph --format svg  -o graph.svg
-exitctl graph --format png  -o graph.png
-exitctl graph --format json -o shop.graph.json    # data export
+lockinaudit graph --format tree                       # terminal (default)
+lockinaudit graph --format dot  -o graph.dot
+lockinaudit graph --format svg  -o graph.svg
+lockinaudit graph --format png  -o graph.png
+lockinaudit graph --format json -o shop.graph.json    # data export
 ```
 
 The JSON export is a result document with `kind: "graph"`. It carries the facts read from
@@ -206,15 +206,15 @@ the sources, nodes, edges, groups, cycles, evidence, identities, and every versi
 catalog, catalog schema, rules, configuration fingerprint). It is a valid input to `merge`
 and round-trips without change.
 
-`exitctl merge` combines results or graph exports from several repositories:
+`lockinaudit merge` combines results or graph exports from several repositories:
 
 ```sh
-exitctl merge infra.json shop.graph.json payments.json -o estate.json
+lockinaudit merge infra.json shop.graph.json payments.json -o estate.json
 ```
 
 Merge takes the union of the facts of all inputs and then rebuilds the graph and the analysis
 with the current catalog and configuration. Because facts do not depend on the catalog, a
-result scanned with an older catalog can be re-evaluated with a newer one. Nodes from different
+result produced with an older catalog can be re-evaluated with a newer one. Nodes from different
 repositories merge by identity, so a bucket declared in one repository and used from code in
 another becomes one node with a `usage` edge. The output does not depend on the order of the
 inputs. The merged result lists every input with its original versions; an input with an
@@ -250,7 +250,7 @@ unsupported format version is rejected with its file name.
 
 **Implied service**
 : A node for a service used from code or bound from Kubernetes, with no matching resource in
-  the scanned infrastructure.
+  the inspected infrastructure.
 
 **Unknown vs unverified**
 : An unknown node has a type the catalog does not know. An unverified node has a type that only

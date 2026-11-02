@@ -3,7 +3,7 @@ package cli
 import (
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/result"
 )
 
 func TestResolveTargetByLocation(t *testing.T) {

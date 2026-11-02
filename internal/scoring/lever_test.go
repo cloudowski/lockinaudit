@@ -3,7 +3,7 @@ package scoring
 import (
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
 )
 
 func TestBetterLeverTieBreak(t *testing.T) {

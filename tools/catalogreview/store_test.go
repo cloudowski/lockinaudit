@@ -15,8 +15,8 @@ import (
 
 	yaml "go.yaml.in/yaml/v3"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/testutil"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/testutil"
 )
 
 const (

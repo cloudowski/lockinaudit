@@ -17,11 +17,11 @@ import (
 
 	"go.yaml.in/yaml/v3"
 
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/redact"
-	"github.com/cloudowski/exitctl/internal/source"
-	"github.com/cloudowski/exitctl/internal/source/srcscan"
-	"github.com/cloudowski/exitctl/internal/walk"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/redact"
+	"github.com/cloudowski/lockinaudit/internal/source"
+	"github.com/cloudowski/lockinaudit/internal/source/srcscan"
+	"github.com/cloudowski/lockinaudit/internal/walk"
 )
 
 // isPulumiPackage reports whether a dependency marks a component as a

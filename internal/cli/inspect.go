@@ -11,17 +11,17 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/config"
-	"github.com/cloudowski/exitctl/internal/engine"
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/render/terminal"
-	"github.com/cloudowski/exitctl/internal/result"
-	"github.com/cloudowski/exitctl/internal/scanner"
-	"github.com/cloudowski/exitctl/internal/source"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/config"
+	"github.com/cloudowski/lockinaudit/internal/engine"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/render/terminal"
+	"github.com/cloudowski/lockinaudit/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/scanner"
+	"github.com/cloudowski/lockinaudit/internal/source"
 )
 
-type scanFlags struct {
+type inspectFlags struct {
 	all      bool
 	wide     bool
 	output   string
@@ -35,18 +35,18 @@ type scanFlags struct {
 
 var datePattern = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}$`)
 
-func init() { register(newScanCmd) }
+func init() { register(newInspectCmd) }
 
-func newScanCmd(app *App) *cobra.Command {
-	var f scanFlags
+func newInspectCmd(app *App) *cobra.Command {
+	var f inspectFlags
 	cmd := &cobra.Command{
-		Use:   "scan [path...]",
-		Short: "Scan directories offline and summarize vendor lock-in",
+		Use:   "inspect [path...]",
+		Short: "Inspect directories offline and summarize vendor lock-in",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) == 0 {
 				args = []string{"."}
 			}
-			return app.runScan(cmd.Context(), args, f)
+			return app.runInspect(cmd.Context(), args, f)
 		},
 	}
 	fl := cmd.Flags()
@@ -57,12 +57,12 @@ func newScanCmd(app *App) *cobra.Command {
 	fl.StringArrayVar(&f.ignores, "ignore", nil, "extra ignore glob (repeatable)")
 	fl.StringArrayVar(&f.values, "values", nil, "Helm values file as <chart-dir>=<file> (repeatable)")
 	fl.StringVar(&f.asOf, "as-of", "", "reference date YYYY-MM-DD for exception expiry (default today)")
-	fl.BoolVar(&f.noStore, "no-store", false, "do not write .exitctl/last-result.json")
+	fl.BoolVar(&f.noStore, "no-store", false, "do not write .lockinaudit/last-result.json")
 	fl.StringVar(&f.format, "format", "text", "output format: text or json")
 	return cmd
 }
 
-func (app *App) runScan(ctx context.Context, paths []string, f scanFlags) error {
+func (app *App) runInspect(ctx context.Context, paths []string, f inspectFlags) error {
 	if ctx == nil {
 		ctx = context.Background()
 	}
@@ -127,18 +127,18 @@ func (app *App) runScan(ctx context.Context, paths []string, f scanFlags) error 
 		inputs = append(inputs, engine.Input{Repo: repo, AsOf: asOf})
 	}
 	if len(facts.RawNodes) == 0 && len(facts.CodeUses) == 0 {
-		_, _ = fmt.Fprintln(app.Out, "Offline, read-only scan: no supported sources found.")
+		_, _ = fmt.Fprintln(app.Out, "Offline, read-only inspection: no supported sources found.")
 		_, _ = fmt.Fprintln(app.Out, "Supported: Terraform/OpenTofu, CloudFormation, Kubernetes manifests, Helm charts,")
 		_, _ = fmt.Fprintln(app.Out, "Kustomize, Dockerfiles, GitHub Actions, GitLab CI, and dependency manifests for")
 		_, _ = fmt.Fprintln(app.Out, "JavaScript/TypeScript, Python, Go, Java and C#.")
-		return &ExitError{Code: ExitNothing, Msg: "nothing to scan"}
+		return &ExitError{Code: ExitNothing, Msg: "nothing to inspect"}
 	}
 
 	an := engine.Analyze(facts, ix, cfg, inputs)
 	return app.emitResult(an.Doc, ix, f)
 }
 
-func (app *App) emitResult(doc *result.Document, ix *catalog.Index, f scanFlags) error {
+func (app *App) emitResult(doc *result.Document, ix *catalog.Index, f inspectFlags) error {
 	for _, n := range terminal.ExceptionNotices(doc) {
 		_, _ = fmt.Fprintln(app.Err, n)
 	}
@@ -156,7 +156,7 @@ func (app *App) emitResult(doc *result.Document, ix *catalog.Index, f scanFlags)
 		if err := result.Encode(app.Out, doc); err != nil {
 			return err
 		}
-	} else if err := terminal.Summary(app.Out, doc, app.scanTermOptions(ix, f)); err != nil {
+	} else if err := terminal.Summary(app.Out, doc, app.inspectTermOptions(ix, f)); err != nil {
 		return err
 	}
 	if doc.Analysis.Status != "ok" {
@@ -182,8 +182,8 @@ func helmValues(flags []string, c config.Config) (map[string][]string, error) {
 	return out, nil
 }
 
-// scanTermOptions returns the terminal options for the scan summary.
-func (app *App) scanTermOptions(ix *catalog.Index, f scanFlags) terminal.Options {
+// inspectTermOptions returns the terminal options for the inspection summary.
+func (app *App) inspectTermOptions(ix *catalog.Index, f inspectFlags) terminal.Options {
 	o := app.termOptions(ix, f.all)
 	o.Wide = f.wide
 	return o

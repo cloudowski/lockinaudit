@@ -1,4 +1,4 @@
-Offline, read-only scan: 4 Terraform resources, 3 K8s objects
+Offline, read-only inspection: 4 Terraform resources, 3 K8s objects
   Lock-in index  26/100  grade C
   technical ███░░░░░░░  data ░░░░░░░░░░  operational ███░░░░░░░  skills ░░░░░░░░░░
   economic: not assessed
@@ -11,5 +11,5 @@ Offline, read-only scan: 4 Terraform resources, 3 K8s objects
 
   Biggest lever: Amazon Virtual Private Cloud (VPC) -> Scaleway lowers the index by 26 pts
   Coverage: 100% of types, 100% of resources
-  Explain #1: exitctl explain 1  |  Report: exitctl report --format html --open
-  exitctl 0.1.0-dev · catalog 2026.10.1 · rules 1.1.0 · config 8d36fc36 (draft catalog)
+  Explain #1: lockinaudit explain 1  |  Report: lockinaudit report --format html --open
+  lockinaudit 0.2.0-dev · catalog 2026.10.1 · rules 1.1.0 · config 8d36fc36 (draft catalog)

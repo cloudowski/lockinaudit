@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
 )
 
 func init() { register(newCatalogCmd) }

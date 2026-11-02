@@ -17,10 +17,10 @@ import (
 	chartutil "helm.sh/helm/v4/pkg/chart/v2/util"
 	"helm.sh/helm/v4/pkg/engine"
 
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/redact"
-	"github.com/cloudowski/exitctl/internal/source"
-	"github.com/cloudowski/exitctl/internal/walk"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/redact"
+	"github.com/cloudowski/lockinaudit/internal/source"
+	"github.com/cloudowski/lockinaudit/internal/walk"
 )
 
 // Neutral notes for Helm sources.
@@ -35,7 +35,7 @@ const (
 
 // Release settings used for offline rendering.
 const (
-	helmReleaseName = "exitctl"
+	helmReleaseName = "lockinaudit"
 	helmNamespace   = "default"
 )
 
@@ -158,7 +158,7 @@ func renderChart(ctx context.Context, root, dir string, opts source.Options) (f 
 	rendered, err := engine.Engine{}.RenderWithContext(ctx, ch, top)
 	if err != nil {
 		// Retry tolerating `required` and `fail` (charts that need values
-		// the scan does not have).
+		// the inspection does not have).
 		rendered, err = engine.Engine{LintMode: true}.RenderWithContext(ctx, ch, top)
 		if err == nil {
 			partial(noteChartRequired)

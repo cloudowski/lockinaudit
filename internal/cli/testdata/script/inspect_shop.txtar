@@ -1,0 +1,39 @@
+# lockinaudit inspect on the shop-aws fixture prints the one-screen summary (US1).
+exec lockinaudit inspect $FIXTURES/shop-aws --include-drafts --as-of 2026-10-06 --repo-name shop-aws --emoji never --no-color
+stdout '^Offline, read-only inspection: '
+stdout 'Lock-in index +[0-9]+/100 +grade [ABCDF]'
+stdout 'economic: not assessed'
+stdout 'Top anchors'
+stdout '1\. aws_dynamodb_table\.orders'
+stdout 'files in 1 component use Amazon DynamoDB SDK'
+stdout '\[R\]|Biggest lever:'
+stdout 'Coverage: '
+stdout 'Explain #1: lockinaudit explain 1  \|  Report: lockinaudit report'
+! stdout '🎯'
+stdout 'catalog 2026\.10\.1'
+! stdout 'hunter2'
+exists .lockinaudit/last-result.json
+exists .lockinaudit/.gitignore
+! grep hunter2 .lockinaudit/last-result.json
+
+# at most 24 lines
+exec lockinaudit inspect $FIXTURES/shop-aws --include-drafts --as-of 2026-10-06 --repo-name shop-aws --emoji never --no-color --all
+stdout '^Offline'
+
+# --wide lists every alternative instead of "+N"
+exec lockinaudit inspect $FIXTURES/shop-aws --include-drafts --as-of 2026-10-06 --repo-name shop-aws --emoji never --no-color --wide
+stdout 'ScyllaDB, Apache Cassandra, '
+! stdout 'Apache Cassandra \+[0-9]'
+
+# json output validates as a result document
+exec lockinaudit inspect $FIXTURES/shop-aws --include-drafts --as-of 2026-10-06 --format json --no-store
+stdout '"format": "lockinaudit.result/v1"'
+
+# an empty directory has nothing to inspect (exit 2)
+mkdir empty
+! exec lockinaudit inspect empty
+stdout 'no supported sources found'
+
+# --as-of must be a date
+! exec lockinaudit inspect $FIXTURES/app-only --as-of yesterday
+stderr 'as-of must be YYYY-MM-DD'

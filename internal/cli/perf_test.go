@@ -11,20 +11,20 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudowski/exitctl/tools/genfixture/fixture"
+	"github.com/cloudowski/lockinaudit/tools/genfixture/fixture"
 )
 
 // Performance tests (T097, SC-001). They are opt-in so that a plain
-// `go test ./...` stays fast: they run only when EXITCTL_PERF=1 is set and
+// `go test ./...` stays fast: they run only when LOCKINAUDIT_PERF=1 is set and
 // are always skipped with -short.
 //
-//	EXITCTL_PERF=1 go test ./internal/cli -run TestPerf -count=1 -v
+//	LOCKINAUDIT_PERF=1 go test ./internal/cli -run TestPerf -count=1 -v
 func TestPerf(t *testing.T) {
 	if testing.Short() {
 		t.Skip("perf test skipped with -short")
 	}
-	if os.Getenv("EXITCTL_PERF") != "1" {
-		t.Skip("perf test skipped: set EXITCTL_PERF=1 to run")
+	if os.Getenv("LOCKINAUDIT_PERF") != "1" {
+		t.Skip("perf test skipped: set LOCKINAUDIT_PERF=1 to run")
 	}
 	cases := []struct {
 		name  string
@@ -48,24 +48,24 @@ func TestPerf(t *testing.T) {
 			peak := sampleHeap()
 			start := time.Now()
 			var so, se bytes.Buffer
-			code := Run([]string{"scan", dir, "--include-drafts", "--no-store", "--as-of", "2026-10-06",
+			code := Run([]string{"inspect", dir, "--include-drafts", "--no-store", "--as-of", "2026-10-06",
 				"--repo-name", "perf", "--emoji", "never", "--no-color", "--output", out}, &so, &se)
 			elapsed := time.Since(start)
 			maxHeap := peak()
 			if code != 0 {
-				t.Fatalf("scan exited %d: %s", code, se.String())
+				t.Fatalf("inspect exited %d: %s", code, se.String())
 			}
-			t.Logf("scan took %s (limit %s), peak heap in use ~%.0f MiB", elapsed.Round(time.Millisecond), tc.limit, float64(maxHeap)/(1<<20))
+			t.Logf("inspection took %s (limit %s), peak heap in use ~%.0f MiB", elapsed.Round(time.Millisecond), tc.limit, float64(maxHeap)/(1<<20))
 			checkResult(t, out, st)
 			if elapsed > tc.limit {
-				t.Fatalf("scan took %s, limit %s (SC-001)", elapsed, tc.limit)
+				t.Fatalf("inspection took %s, limit %s (SC-001)", elapsed, tc.limit)
 			}
 		})
 	}
 }
 
-// checkResult makes sure the scan actually saw the generated content, so a
-// fast but empty scan cannot pass.
+// checkResult makes sure the inspection actually saw the generated content, so a
+// fast but empty inspection cannot pass.
 func checkResult(t *testing.T, path string, st fixture.Stats) {
 	t.Helper()
 	b, err := os.ReadFile(path)

@@ -5,7 +5,7 @@ types the catalog does not know, an unresolved remote module, a remote Kustomize
 unresolved reference, and one file that cannot be parsed. Unknown resources carry most of the
 graph weight, so the grade is withheld and only the index range is shown.
 
-The numbers below are for `exitctl scan . --include-drafts` (the built-in AWS entries are
+The numbers below are for `lockinaudit inspect . --include-drafts` (the built-in AWS entries are
 still drafts). `internal/cli/testdata/script/coverage.txtar` asserts them.
 
 ## What each file exercises
@@ -50,10 +50,10 @@ Summary line:
 ```text
   Lock-in index range 17-79 - insufficient coverage for a grade (37%)
   ...
-  Coverage: 71% of types, 55% of resources (2 unknown types: exitctl coverage)
+  Coverage: 71% of types, 55% of resources (2 unknown types: lockinaudit coverage)
 ```
 
-## Expected `exitctl coverage`
+## Expected `lockinaudit coverage`
 
 - Unknown types (terraform), sorted by dependents: `acme_widget` (2 resources, 5 dependents,
   `infra/widgets.tf:3`), then `exoticcloud_bucket` (2 resources, 2 dependents,

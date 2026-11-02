@@ -1,5 +1,5 @@
 // Package fixture generates synthetic, deterministic repositories for
-// performance testing (T097, SC-001). It is dev-only: the exitctl binary never
+// performance testing (T097, SC-001). It is dev-only: the lockinaudit binary never
 // imports it.
 //
 // The generated repository has:

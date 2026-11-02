@@ -11,9 +11,9 @@ import (
 	"sigs.k8s.io/kustomize/api/krusty"
 	"sigs.k8s.io/kustomize/kyaml/filesys"
 
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/source"
-	"github.com/cloudowski/exitctl/internal/walk"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/source"
+	"github.com/cloudowski/lockinaudit/internal/walk"
 )
 
 // Neutral notes for Kustomize sources.
@@ -23,7 +23,7 @@ const (
 	noteKustBuild   = "kustomization could not be built"
 	noteKustParse   = "kustomization could not be parsed"
 	noteKustMissing = "a referenced resource is missing; not built"
-	noteKustOutside = "references files outside the scan root; not built"
+	noteKustOutside = "references files outside the inspection root; not built"
 	noteKustOutput  = "some build output could not be parsed as YAML"
 )
 
@@ -188,7 +188,7 @@ func relPath(root, p string) string {
 var runKrusty = func(absDir string) ([]byte, error) {
 	// krusty prints deprecation warnings ("'commonLabels' is deprecated...")
 	// straight to os.Stderr with no option to disable them. They are about
-	// the user's manifests, not the scan, so silence them for the build.
+	// the user's manifests, not the inspection, so silence them for the build.
 	if devnull, err := os.OpenFile(os.DevNull, os.O_WRONLY, 0); err == nil {
 		orig := os.Stderr
 		os.Stderr = devnull

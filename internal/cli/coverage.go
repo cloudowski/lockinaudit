@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/cloudowski/exitctl/internal/render/terminal"
+	"github.com/cloudowski/lockinaudit/internal/render/terminal"
 )
 
 func init() { register(newCoverageCmd) }

@@ -8,9 +8,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/cloudowski/exitctl/internal/render/graphviz"
-	"github.com/cloudowski/exitctl/internal/render/terminal"
-	"github.com/cloudowski/exitctl/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/render/graphviz"
+	"github.com/cloudowski/lockinaudit/internal/render/terminal"
+	"github.com/cloudowski/lockinaudit/internal/result"
 )
 
 func init() { register(newGraphCmd) }
@@ -37,7 +37,7 @@ func newGraphCmd(app *App) *cobra.Command {
 	fl.BoolVar(&f.blastRadius, "blast-radius", false, "with a resource: show only its dependents tree")
 	fl.BoolVar(&f.waves, "waves", false, "label nodes and groups with their migration wave")
 	fl.StringVar(&f.format, "format", "tree", "output format: tree, json, dot, svg, png")
-	fl.StringVarP(&f.output, "output", "o", "", "output file (required for png; default exitctl-graph.<ext> for svg)")
+	fl.StringVarP(&f.output, "output", "o", "", "output file (required for png; default lockinaudit-graph.<ext> for svg)")
 	fl.BoolVar(&f.expand, "expand", false, "disable type collapse and container grouping")
 	return cmd
 }
@@ -99,7 +99,7 @@ func (app *App) runGraph(ctx context.Context, args []string, f graphFlags) error
 			buf.Reset()
 			buf.Write(img)
 			if f.output == "" {
-				f.output = "exitctl-graph." + f.format
+				f.output = "lockinaudit-graph." + f.format
 			}
 		}
 	}

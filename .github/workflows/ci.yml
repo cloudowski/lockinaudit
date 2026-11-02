@@ -1,4 +1,4 @@
-# CI for exitctl (T096). Releases are built by .github/workflows/release.yml on a "vX.Y.Z" tag.
+# CI for lockinaudit (T096). Releases are built by .github/workflows/release.yml on a "vX.Y.Z" tag.
 #
 # Maintainer decision: the slow jobs "determinism", "determinism-diff" and "cross" are
 # disabled (commented out) to keep CI around two minutes; re-enable them by uncommenting.
@@ -7,7 +7,7 @@
 # Jobs:
 #   lint              golangci-lint v2 with the repository .golangci.yml
 #   test              go test ./... (unit + golden + testscript e2e)
-#   (disabled) determinism       make determinism on linux/amd64 and darwin/arm64, plus JSON scan
+#   (disabled) determinism       make determinism on linux/amd64 and darwin/arm64, plus JSON inspection
 #                     results of every fixture uploaded as artifacts (SC-003, R15)
 #   (disabled) determinism-diff  downloads both result sets and compares them byte for byte
 #   e2e-offline       testscript suite inside a network-less user namespace (SC-009, R20)
@@ -87,20 +87,20 @@ jobs:
   #       run: make determinism
   #     - name: make build
   #       run: make build
-  #     - name: Scan every fixture to JSON
+  #     - name: Inspect every fixture to JSON
   #       shell: bash
   #       run: |
   #         set -euo pipefail
   #         out="determinism-results"
   #         mkdir -p "$out"
-  #         scan() {
+  #         inspect() {
   #           # $1 = fixture directory, $2 = repository name / output file stem
   #           local rc=0
-  #           ./bin/exitctl scan "$1" --include-drafts --as-of 2026-10-06 \
+  #           ./bin/lockinaudit inspect "$1" --include-drafts --as-of 2026-10-06 \
   #             --repo-name "$2" --no-store --format json > "$out/$2.json" || rc=$?
-  #           # 0 = success, 2 = nothing to scan; anything else is a real failure.
+  #           # 0 = success, 2 = nothing to inspect; anything else is a real failure.
   #           if [ "$rc" -ne 0 ] && [ "$rc" -ne 2 ]; then
-  #             echo "::error::scan of $1 exited $rc"
+  #             echo "::error::inspect of $1 exited $rc"
   #             exit 1
   #           fi
   #           # Exit codes are part of the cross-architecture comparison too.
@@ -110,14 +110,14 @@ jobs:
   #           dir="${dir%/}"
   #           name="$(basename "$dir")"
   #           # A fixture with no regular files at its top level (e.g. split/) is a
-  #           # group of repositories: scan each child as its own repository.
+  #           # group of repositories: inspect each child as its own repository.
   #           if [ -z "$(find "$dir" -mindepth 1 -maxdepth 1 -type f -print -quit)" ]; then
   #             for child in "$dir"/*/; do
   #               child="${child%/}"
-  #               scan "$child" "$name-$(basename "$child")"
+  #               inspect "$child" "$name-$(basename "$child")"
   #             done
   #           else
-  #             scan "$dir" "$name"
+  #             inspect "$dir" "$name"
   #           fi
   #         done
   #         ls -l "$out"

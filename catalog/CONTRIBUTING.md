@@ -1,6 +1,6 @@
-# Contributing to the exitctl catalog
+# Contributing to the lockinaudit catalog
 
-The catalog is the knowledge behind every exitctl result: which resource types belong to which
+The catalog is the knowledge behind every lockinaudit result: which resource types belong to which
 service, what lock-in each service carries, how to detect it in code, and where to go instead.
 It is plain YAML data. Adding or correcting knowledge never requires a code change.
 
@@ -187,7 +187,7 @@ an existence test. Several operators on one `attr` must all hold.
 ### Three-valued logic
 
 IaC is often dynamic: a variable, a `for_each`, or a computed reference has no literal value
-when scanning offline. exitctl never guesses. Each condition is **true**, **false**, or
+when inspecting offline. lockinaudit never guesses. Each condition is **true**, **false**, or
 **unknown**:
 
 - A non-literal (or redacted) value makes the attribute comparison unknown. A missing
@@ -277,9 +277,9 @@ sdk:
 
 - `packages`: dependency names that point to this service specifically. A match in a manifest
   is enough to record usage (the manifest line is the evidence).
-- `imports`: source-line patterns, scanned only in components that depend on one of
+- `imports`: source-line patterns, searched only in components that depend on one of
   `packages`. A hit gives file:line evidence.
-- `usage`: patterns for generic clients (for example `boto3.client("dynamodb")`), scanned only
+- `usage`: patterns for generic clients (for example `boto3.client("dynamodb")`), searched only
   when a `gate` package is present.
 - A generic SDK package alone (`boto3`, `aws-sdk`) never creates a usage. Only service-specific
   packages, imports, or usage patterns do.
@@ -287,7 +287,7 @@ sdk:
   easier than usual (S3-compatible clients, for example).
 
 Cloud SDK packages that no `packages` glob (or `gate`) claims are reported as `unknown_sdk`
-gaps in `exitctl coverage`, with the provider and service derived from the package name
+gaps in `lockinaudit coverage`, with the provider and service derived from the package name
 (`@aws-sdk/client-*`, `google-cloud-*`, `azure-*`, `com.amazonaws:*`, ...) and from
 `boto3.client("x")` calls. Use that list to find which entries and ecosystems to add.
 
@@ -431,7 +431,7 @@ LLM-generated entries are welcome as a starting point, under stricter rules:
 - An LLM entry stays `draft` until a human reviewer has checked it against its `sources`,
   `eval_passed` is `true`, and `reviewed_by`/`reviewed_on` are filled. Only then may its status
   become `verified`.
-- `exitctl catalog validate` reports LLM-generated entries awaiting review as a separate
+- `lockinaudit catalog validate` reports LLM-generated entries awaiting review as a separate
   count.
 
 ## Reviewing entries (maintainers)
@@ -467,7 +467,7 @@ alternative that is not verified (so it is not shown). Keyboard: `j`/`k` move, `
 Every change is validated against the whole catalog and rolled back if it would make the
 catalog invalid (for example removing the last alternative of a verified service). Files keep
 their layout, so `git diff` shows only what changed. The tool listens on 127.0.0.1 only. The
-built-in catalog is embedded at build time, so rebuild exitctl (`make build`) to scan with the
+built-in catalog is embedded at build time, so rebuild lockinaudit (`make build`) to inspect with the
 reviewed catalog.
 
 ## Checking your change
@@ -475,7 +475,7 @@ reviewed catalog.
 Validate the catalog directory:
 
 ```sh
-exitctl catalog validate catalog/
+lockinaudit catalog validate catalog/
 ```
 
 Validation checks, in order: every file against the schema; unique IDs per kind; that all
@@ -485,12 +485,12 @@ only with maintainer approval; verified services have at least one alternative. 
 are reported at once as `<file>:<line>  <entry-id>  <problem>`, followed by counts per kind and
 status. The exit code is 0 when the catalog is valid and 3 otherwise.
 
-Then scan a repository that uses the service with your local catalog:
+Then inspect a repository that uses the service with your local catalog:
 
 ```sh
-exitctl scan path/to/repo --catalog catalog/
-exitctl explain <resource-address>
-exitctl coverage
+lockinaudit inspect path/to/repo --catalog catalog/
+lockinaudit explain <resource-address>
+lockinaudit coverage
 ```
 
 Check that the resource is recognized, that each finding has the evidence you expect, and that
@@ -505,4 +505,4 @@ validated before use; an invalid catalog is never used.
 - SDK patterns are service-specific and compile as RE2.
 - Alternative mappings meet [NEUTRALITY.md](./NEUTRALITY.md) and list residual traits.
 - Provenance is complete, with sources; new entries start as `draft`.
-- `exitctl catalog validate` passes.
+- `lockinaudit catalog validate` passes.

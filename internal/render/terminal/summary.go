@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/result"
-	"github.com/cloudowski/exitctl/internal/version"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/version"
 )
 
 // MaxSummaryLines is the hard cap on summary length (contracts/cli.md).
@@ -38,8 +38,8 @@ const (
 // bars line, economic gets its own line.
 var dimensionOrder = []string{"technical", "data", "operational", "skills", "economic"}
 
-// Summary writes the scan summary of doc to w (contracts/cli.md
-// "exitctl scan"). The output is at most MaxSummaryLines lines unless
+// Summary writes the inspection summary of doc to w (contracts/cli.md
+// "lockinaudit inspect"). The output is at most MaxSummaryLines lines unless
 // opts.All lists every anchor, and is deterministic for a given document and
 // options.
 func Summary(w io.Writer, doc *result.Document, opts Options) error {
@@ -55,12 +55,12 @@ func Summary(w io.Writer, doc *result.Document, opts Options) error {
 
 func summaryLines(doc *result.Document, o Options) []string {
 	a := &doc.Analysis
-	head := []string{o.bold("Offline, read-only scan:") + " " + scanCounts(doc)}
+	head := []string{o.bold("Offline, read-only inspection:") + " " + inspectCounts(doc)}
 	tail := []string{}
 
 	if a.Status == statusNothingScored {
 		head = append(head, "  Nothing to score: no recognized cloud resources or SDK usage found.")
-		tail = append(tail, coverageLine(a.Coverage, o), "  "+o.bold("Unrecognized types:")+" exitctl coverage", footer(doc, o))
+		tail = append(tail, coverageLine(a.Coverage, o), "  "+o.bold("Unrecognized types:")+" lockinaudit coverage", footer(doc, o))
 		return append(head, tail...)
 	}
 
@@ -77,9 +77,9 @@ func summaryLines(doc *result.Document, o Options) []string {
 	}
 	if len(a.Anchors) > 0 {
 		rank := strconv.Itoa(a.Anchors[0].Rank)
-		tail = append(tail, "  "+o.bold("Explain #"+rank+":")+" exitctl explain "+rank+"  |  "+o.bold("Report:")+" exitctl report --format html --open")
+		tail = append(tail, "  "+o.bold("Explain #"+rank+":")+" lockinaudit explain "+rank+"  |  "+o.bold("Report:")+" lockinaudit report --format html --open")
 	} else {
-		tail = append(tail, "  "+o.bold("Unrecognized types:")+" exitctl coverage")
+		tail = append(tail, "  "+o.bold("Unrecognized types:")+" lockinaudit coverage")
 	}
 	tail = append(tail, footer(doc, o))
 
@@ -125,7 +125,7 @@ func summaryLines(doc *result.Document, o Options) []string {
 		mid = append(mid, bl...)
 	}
 	if hidden := total - k; hidden > 0 {
-		mid = append(mid, fmt.Sprintf("  ... %d more %s: exitctl scan --all", hidden, plural(hidden, "anchor", "anchors")))
+		mid = append(mid, fmt.Sprintf("  ... %d more %s: lockinaudit inspect --all", hidden, plural(hidden, "anchor", "anchors")))
 	}
 	mid = append(mid, "")
 	out := concat(head, mid, tail)
@@ -145,9 +145,9 @@ func concat(parts ...[]string) []string {
 	return out
 }
 
-// scanCounts summarizes what was scanned, by kind, from the raw facts
+// inspectCounts summarizes what was inspected, by kind, from the raw facts
 // (de-duplicated by node ID). Zero counts are omitted.
-func scanCounts(doc *result.Document) string {
+func inspectCounts(doc *result.Document) string {
 	var tf, cfn, cdk, pulumi, k8s, images, ci, comps int
 	seen := map[string]bool{}
 	for _, n := range doc.Facts.RawNodes {
@@ -410,7 +410,7 @@ func unmappedSDKHint(doc *result.Document) string {
 	if n == 0 {
 		return ""
 	}
-	return fmt.Sprintf("; %d unmapped cloud %s: exitctl coverage", n, plural(n, "SDK", "SDKs"))
+	return fmt.Sprintf("; %d unmapped cloud %s: lockinaudit coverage", n, plural(n, "SDK", "SDKs"))
 }
 
 func coverageLine(c result.Coverage, o Options) string {
@@ -419,7 +419,7 @@ func coverageLine(c result.Coverage, o Options) string {
 		o.paint(coverageColor(c.Types), false, pct(c.Types)) + " of types, " +
 		o.paint(coverageColor(c.Resources), false, pct(c.Resources)) + " of resources"
 	if c.UnknownTypes > 0 {
-		l += fmt.Sprintf(" (%d unknown %s: exitctl coverage)", c.UnknownTypes, plural(c.UnknownTypes, "type", "types"))
+		l += fmt.Sprintf(" (%d unknown %s: lockinaudit coverage)", c.UnknownTypes, plural(c.UnknownTypes, "type", "types"))
 	}
 	return l
 }
@@ -493,7 +493,7 @@ func footer(doc *result.Document, o Options) string {
 		fp = fp[:8]
 	}
 	s := " " + o.sep() + " "
-	l := "  exitctl " + tool + s + "catalog " + v.Catalog + s + "rules " + rules + s + "config " + fp
+	l := "  lockinaudit " + tool + s + "catalog " + v.Catalog + s + "rules " + rules + s + "config " + fp
 	if v.CustomScoring {
 		l += " (custom scoring)"
 	}

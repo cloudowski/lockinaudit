@@ -6,10 +6,10 @@ import (
 	"os"
 	"strings"
 
-	catalogdata "github.com/cloudowski/exitctl/catalog"
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/render/terminal"
-	"github.com/cloudowski/exitctl/internal/result"
+	catalogdata "github.com/cloudowski/lockinaudit/catalog"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/render/terminal"
+	"github.com/cloudowski/lockinaudit/internal/result"
 )
 
 // loadIndex loads the built-in or --catalog catalog, validates it, and
@@ -25,7 +25,7 @@ func (app *App) loadIndex() (*catalog.Index, error) {
 	}
 	if len(probs) > 0 {
 		var b strings.Builder
-		fmt.Fprintf(&b, "%s is invalid (%d problems); run 'exitctl catalog validate' for details", name, len(probs))
+		fmt.Fprintf(&b, "%s is invalid (%d problems); run 'lockinaudit catalog validate' for details", name, len(probs))
 		if app.Opts.Verbose {
 			for _, p := range probs {
 				b.WriteString("\n  " + p.String())
@@ -65,7 +65,7 @@ func (app *App) termOptions(ix *catalog.Index, all bool) terminal.Options {
 	return o
 }
 
-// loadInput loads the --input result file (default: last scan).
+// loadInput loads the --input result file (default: last inspection).
 func (app *App) loadInput() (*result.Document, error) {
 	d, err := result.Load(app.Opts.InputPath)
 	if err != nil {
@@ -73,7 +73,7 @@ func (app *App) loadInput() (*result.Document, error) {
 			return nil, Errorf(ExitInvalidInput, "%v", err)
 		}
 		if os.IsNotExist(err) {
-			return nil, Errorf(ExitInvalidInput, "no result found at %s: run 'exitctl scan' first", app.Opts.InputPath)
+			return nil, Errorf(ExitInvalidInput, "no result found at %s: run 'lockinaudit inspect' first", app.Opts.InputPath)
 		}
 		return nil, Errorf(ExitInvalidInput, "%v", err)
 	}

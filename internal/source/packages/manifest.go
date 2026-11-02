@@ -17,7 +17,7 @@ import (
 
 	"golang.org/x/mod/modfile"
 
-	"github.com/cloudowski/exitctl/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/model"
 )
 
 // ManifestReader is a small built-in PackageDetector for direct dependency

@@ -1,6 +1,6 @@
 schema: "1.0"
 kind: catalog
 catalog_version: 2026.10.1
-title: exitctl open catalog
+title: lockinaudit open catalog
 maintainers: [cloudowski]
 neutrality: NEUTRALITY.md

@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/result"
 )
 
 // Node classes of result.Node (graph package) used by the coverage view.
@@ -56,7 +56,7 @@ type CoverageNode struct {
 	Location        *CoverageLocation `json:"location,omitempty"`
 }
 
-// CoverageView is everything `exitctl coverage` shows; it is also the
+// CoverageView is everything `lockinaudit coverage` shows; it is also the
 // --format json shape. Every slice is sorted deterministically.
 type CoverageView struct {
 	Status       string          `json:"status"`
@@ -375,7 +375,7 @@ func unresolvedWording(k model.GapKind) string {
 	case model.GapRemoteKustomize:
 		return "remote kustomize base not fetched"
 	case model.GapUnresolvedReference:
-		return "reference outside the scanned inputs"
+		return "reference outside the inspected inputs"
 	}
 	return string(k)
 }
@@ -406,7 +406,7 @@ func notReadText(s model.Source) string {
 	return w + "; " + s.Note
 }
 
-// Coverage writes the coverage view (contracts/cli.md "exitctl coverage").
+// Coverage writes the coverage view (contracts/cli.md "lockinaudit coverage").
 // Wording is neutral: raw parser errors never appear (sources carry
 // user-safe notes only and parse failure subjects are not printed).
 func Coverage(w io.Writer, v *CoverageView, o Options) error {

@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/result"
-	"github.com/cloudowski/exitctl/internal/testutil"
+	"github.com/cloudowski/lockinaudit/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/testutil"
 )
 
 func renderDOT(t *testing.T, doc *result.Document, opts Options) []byte {
@@ -22,7 +22,7 @@ func renderDOT(t *testing.T, doc *result.Document, opts Options) []byte {
 }
 
 func TestDOTShopAWS(t *testing.T) {
-	doc, err := result.Load(filepath.Join(testutil.RepoRoot(t), "testdata", "golden", "scan", "shop-aws.json"))
+	doc, err := result.Load(filepath.Join(testutil.RepoRoot(t), "testdata", "golden", "inspect", "shop-aws.json"))
 	if err != nil {
 		t.Fatal(err)
 	}

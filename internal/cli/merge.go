@@ -6,9 +6,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/cloudowski/exitctl/internal/config"
-	"github.com/cloudowski/exitctl/internal/engine"
-	"github.com/cloudowski/exitctl/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/config"
+	"github.com/cloudowski/lockinaudit/internal/engine"
+	"github.com/cloudowski/lockinaudit/internal/result"
 )
 
 func init() { register(newMergeCmd) }
@@ -58,5 +58,5 @@ func (app *App) runMerge(paths []string, output string) error {
 		return Errorf(ExitInvalidInput, "cannot write %s: %v", output, err)
 	}
 	_, _ = fmt.Fprintf(app.Err, "merged %d results into %s\n", len(docs), output)
-	return app.emitResult(an.Doc, ix, scanFlags{noStore: true, format: "text"})
+	return app.emitResult(an.Doc, ix, inspectFlags{noStore: true, format: "text"})
 }

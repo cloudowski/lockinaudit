@@ -6,9 +6,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/graph"
-	"github.com/cloudowski/exitctl/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/graph"
+	"github.com/cloudowski/lockinaudit/internal/result"
 )
 
 // MaxTreeLines caps the dependents tree in explain unless Options.All is set.
@@ -69,7 +69,7 @@ func Addresses(doc *result.Document) map[string]string {
 // Address returns the display address of a node.
 func Address(n *result.Node) string { return result.DisplayAddress(n) }
 
-// Explain renders the explain view (contracts/cli.md "exitctl explain").
+// Explain renders the explain view (contracts/cli.md "lockinaudit explain").
 func Explain(w io.Writer, d ExplainData, opts Options) error {
 	n := d.Node
 	bw := &lineWriter{w: w}

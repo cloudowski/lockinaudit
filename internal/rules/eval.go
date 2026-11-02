@@ -10,8 +10,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/model"
 )
 
 // Tri is a three-valued truth value.

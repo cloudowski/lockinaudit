@@ -5,9 +5,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/config"
-	"github.com/cloudowski/exitctl/internal/graph"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/config"
+	"github.com/cloudowski/lockinaudit/internal/graph"
 )
 
 func idFnd(node, trait string, lvl catalog.Level, dims ...catalog.Dimension) graph.Finding {

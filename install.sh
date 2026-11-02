@@ -1,18 +1,18 @@
 #!/bin/sh
-# Install exitctl from a GitHub release.
+# Install lockinaudit from a GitHub release.
 #
-#   curl -fsSL https://raw.githubusercontent.com/cloudowski/exitctl/main/install.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/cloudowski/lockinaudit/main/install.sh | sh
 #
 # Environment:
-#   VERSION      release tag to install, for example v0.1.0 (default: latest stable release)
+#   VERSION      release tag to install, for example v0.2.0 (default: latest stable release)
 #   INSTALL_DIR  target directory (default: /usr/local/bin if writable, else ~/.local/bin)
 #
 # The archive is checked against the release's checksums.txt. If cosign is installed,
 # the signature of checksums.txt is verified too.
 set -eu
 
-REPO="cloudowski/exitctl"
-BASE_URL="${EXITCTL_BASE_URL:-https://github.com/$REPO/releases}"
+REPO="cloudowski/lockinaudit"
+BASE_URL="${LOCKINAUDIT_BASE_URL:-https://github.com/$REPO/releases}"
 
 say() { printf '%s\n' "$*"; }
 die() { printf 'install.sh: %s\n' "$*" >&2; exit 1; }
@@ -46,7 +46,7 @@ else
   dir="$HOME/.local/bin"
 fi
 
-file="exitctl_${os}_${arch}.tar.gz"
+file="lockinaudit_${os}_${arch}.tar.gz"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT INT TERM
 
@@ -79,16 +79,16 @@ fi
 [ "$got" = "$want" ] || die "checksum mismatch for $file (expected $want, got $got)"
 say "Checksum OK"
 
-tar -xzf "$tmp/$file" -C "$tmp" exitctl
+tar -xzf "$tmp/$file" -C "$tmp" lockinaudit
 mkdir -p "$dir"
 if [ -w "$dir" ]; then
-  install -m 0755 "$tmp/exitctl" "$dir/exitctl"
+  install -m 0755 "$tmp/lockinaudit" "$dir/lockinaudit"
 else
   say "$dir is not writable, using sudo"
-  sudo install -m 0755 "$tmp/exitctl" "$dir/exitctl"
+  sudo install -m 0755 "$tmp/lockinaudit" "$dir/lockinaudit"
 fi
 
-say "Installed $("$dir/exitctl" version | head -n 1) to $dir/exitctl"
+say "Installed $("$dir/lockinaudit" version | head -n 1) to $dir/lockinaudit"
 case ":$PATH:" in
   *":$dir:"*) ;;
   *) say "Note: $dir is not in your PATH" ;;

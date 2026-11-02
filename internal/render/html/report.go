@@ -10,10 +10,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cloudowski/exitctl/internal/graph"
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/result"
-	"github.com/cloudowski/exitctl/internal/version"
+	"github.com/cloudowski/lockinaudit/internal/graph"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/version"
 )
 
 // ExitReadinessLine is the single closing line about the paid service.
@@ -572,7 +572,7 @@ func gapText(k model.GapKind) string {
 	case model.GapUnresolvedChart:
 		return "Chart not available offline"
 	case model.GapUnresolvedReference:
-		return "Reference to an object outside the scanned inputs"
+		return "Reference to an object outside the inspected inputs"
 	case model.GapParseFailure:
 		return "File could not be read"
 	case model.GapRemoteKustomize:
@@ -647,7 +647,7 @@ func footer(doc *result.Document) []string {
 	if vs.CustomScoring {
 		cfg += " (custom scoring)"
 	}
-	out := []string{"exitctl " + tool, "catalog " + vs.Catalog, "rules " + rules, cfg}
+	out := []string{"lockinaudit " + tool, "catalog " + vs.Catalog, "rules " + rules, cfg}
 	if vs.CatalogDraftsIncluded {
 		out = append(out, "draft catalog")
 	}

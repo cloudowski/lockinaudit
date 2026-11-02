@@ -1,5 +1,5 @@
-// Package terminal renders exitctl results for a terminal: the scan summary
-// (contracts/cli.md "exitctl scan") and the shared style primitives (color,
+// Package terminal renders lockinaudit results for a terminal: the inspection summary
+// (contracts/cli.md "lockinaudit inspect") and the shared style primitives (color,
 // emoji, bars, width math). Color and emoji only reinforce information; the
 // plain-text output carries all of it (constitution principle VIII).
 package terminal

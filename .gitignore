@@ -6,10 +6,10 @@ dist/
 coverage.out
 *.exe
 
-# exitctl local results and generated reports
-.exitctl/
-exitctl-report.*
-exitctl-graph.*
+# lockinaudit local results and generated reports
+.lockinaudit/
+lockinaudit-report.*
+lockinaudit-graph.*
 
 # OS / editors
 .DS_Store

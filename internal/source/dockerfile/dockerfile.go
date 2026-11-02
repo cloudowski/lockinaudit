@@ -9,10 +9,10 @@ import (
 
 	"github.com/moby/buildkit/frontend/dockerfile/parser"
 
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/redact"
-	"github.com/cloudowski/exitctl/internal/source"
-	"github.com/cloudowski/exitctl/internal/walk"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/redact"
+	"github.com/cloudowski/lockinaudit/internal/source"
+	"github.com/cloudowski/lockinaudit/internal/walk"
 )
 
 // New returns the Dockerfile detector: one container_image node per base

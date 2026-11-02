@@ -3,8 +3,8 @@ package catalog_test
 import (
 	"testing"
 
-	catalogdata "github.com/cloudowski/exitctl/catalog"
-	"github.com/cloudowski/exitctl/internal/catalog"
+	catalogdata "github.com/cloudowski/lockinaudit/catalog"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
 )
 
 // TestBuiltinCatalog checks the embedded catalog is valid and meets the

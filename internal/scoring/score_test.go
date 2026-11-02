@@ -5,9 +5,9 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/config"
-	"github.com/cloudowski/exitctl/internal/graph"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/config"
+	"github.com/cloudowski/lockinaudit/internal/graph"
 )
 
 // buildGraph assembles a graph by hand (sorted nodes, index, adjacency) so the

@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/result"
 )
 
 func ip(v int) *int { return &v }
@@ -70,7 +70,7 @@ func TestSummaryNormal(t *testing.T) {
 	o := plainOpts()
 	o.Names = map[string]string{"aws.cognito": "Cognito", "aws.dynamodb": "DynamoDB"}
 	got := render(t, baseDoc(), o)
-	want := `Offline, read-only scan: 3 Terraform resources, 2 K8s objects, 1 image, 1 component
+	want := `Offline, read-only inspection: 3 Terraform resources, 2 K8s objects, 1 image, 1 component
   Lock-in index  62/100  grade D
   technical ███████░░░  data ████████░░  operational █████░░░░░  skills ███░░░░░░░
   economic: not assessed
@@ -82,9 +82,9 @@ func TestSummaryNormal(t *testing.T) {
   3. aws_cognito_user_pool.main           9  Keycloak, Zitadel
 
   🎯 Biggest lever: Cognito -> Keycloak lowers the index by 9 pts
-  ✅ Coverage: 94% of types, 97% of resources (8 unknown types: exitctl coverage)
-  Explain #1: exitctl explain 1  |  Report: exitctl report --format html --open
-  exitctl 0.1.0 · catalog 2026.10.1 · rules 1.0.0 · config 3f2a9c1e
+  ✅ Coverage: 94% of types, 97% of resources (8 unknown types: lockinaudit coverage)
+  Explain #1: lockinaudit explain 1  |  Report: lockinaudit report --format html --open
+  lockinaudit 0.1.0 · catalog 2026.10.1 · rules 1.0.0 · config 3f2a9c1e
 `
 	if got != want {
 		t.Fatalf("summary mismatch\n--- got\n%s--- want\n%s", got, want)
@@ -147,11 +147,11 @@ func TestSummaryNothingScored(t *testing.T) {
 	d := baseDoc()
 	d.Analysis = result.Analysis{Status: "nothing_scored", Coverage: result.Coverage{Types: 0, Resources: 0}}
 	got := render(t, d, plainOpts())
-	want := `Offline, read-only scan: 3 Terraform resources, 2 K8s objects, 1 image, 1 component
+	want := `Offline, read-only inspection: 3 Terraform resources, 2 K8s objects, 1 image, 1 component
   Nothing to score: no recognized cloud resources or SDK usage found.
   ❌ Coverage: 0% of types, 0% of resources
-  Unrecognized types: exitctl coverage
-  exitctl 0.1.0 · catalog 2026.10.1 · rules 1.0.0 · config 3f2a9c1e
+  Unrecognized types: lockinaudit coverage
+  lockinaudit 0.1.0 · catalog 2026.10.1 · rules 1.0.0 · config 3f2a9c1e
 `
 	if got != want {
 		t.Fatalf("got\n%s\nwant\n%s", got, want)
@@ -222,7 +222,7 @@ func TestSummaryASCIIFallback(t *testing.T) {
 	if !strings.Contains(got, "technical #######...  data ########..  operational #####.....  skills ###.......") {
 		t.Fatalf("ASCII bars missing in\n%s", got)
 	}
-	if !strings.Contains(got, "exitctl 0.1.0 - catalog 2026.10.1 - rules 1.0.0 - config 3f2a9c1e") {
+	if !strings.Contains(got, "lockinaudit 0.1.0 - catalog 2026.10.1 - rules 1.0.0 - config 3f2a9c1e") {
 		t.Fatalf("ASCII footer missing in\n%s", got)
 	}
 	for _, r := range got {
@@ -321,7 +321,7 @@ func TestSummaryDefaultAnchors(t *testing.T) {
 	if !strings.Contains(got, "\n  1. aws_s3_bucket.bnode-01") {
 		t.Fatalf("rank column padded for hidden anchors\n%s", got)
 	}
-	if !strings.Contains(got, "  ... 25 more anchors: exitctl scan --all\n") {
+	if !strings.Contains(got, "  ... 25 more anchors: lockinaudit inspect --all\n") {
 		t.Fatalf("missing more hint\n%s", got)
 	}
 }
@@ -341,7 +341,7 @@ func TestSummaryNoAnchorsNoLever(t *testing.T) {
 	d.Analysis.Lever = nil
 	d.Analysis.Coverage.UnknownTypes = 0
 	got := render(t, d, plainOpts())
-	if strings.Contains(got, "Biggest lever") || !strings.Contains(got, "  Unrecognized types: exitctl coverage\n") {
+	if strings.Contains(got, "Biggest lever") || !strings.Contains(got, "  Unrecognized types: lockinaudit coverage\n") {
 		t.Fatalf("unexpected output\n%s", got)
 	}
 	if !strings.Contains(got, "  ✅ Coverage: 94% of types, 97% of resources\n") {

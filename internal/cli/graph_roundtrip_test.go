@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/testutil"
+	"github.com/cloudowski/lockinaudit/internal/testutil"
 )
 
 // TestGraphRoundTrip: a graph JSON export merged on its own yields a
@@ -19,9 +19,9 @@ func TestGraphRoundTrip(t *testing.T) {
 			dir := t.TempDir()
 			res := filepath.Join(dir, "result.json")
 			var so, se bytes.Buffer
-			if code := Run([]string{"scan", filepath.Join(root, "testdata", "fixtures", fx), "--include-drafts",
+			if code := Run([]string{"inspect", filepath.Join(root, "testdata", "fixtures", fx), "--include-drafts",
 				"--as-of", "2026-10-06", "--repo-name", fx, "--no-store", "--output", res}, &so, &se); code != 0 {
-				t.Fatalf("scan exited %d: %s", code, se.String())
+				t.Fatalf("inspect exited %d: %s", code, se.String())
 			}
 			so.Reset()
 			if code := Run([]string{"graph", "--format", "json", "--input", res}, &so, &se); code != 0 {

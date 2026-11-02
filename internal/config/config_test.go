@@ -18,7 +18,7 @@ func TestDefaultFingerprintStable(t *testing.T) {
 }
 
 func TestOverrideChangesFingerprint(t *testing.T) {
-	cfg, err := Parse(".exitctl.yaml", []byte("version: 1\nscoring:\n  dimension_weights:\n    technical: 0.5\n"))
+	cfg, err := Parse(".lockinaudit.yaml", []byte("version: 1\nscoring:\n  dimension_weights:\n    technical: 0.5\n"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,12 +45,12 @@ scoring:
 	}
 }
 
-func TestDiscoverPrefersScanRoot(t *testing.T) {
+func TestDiscoverPrefersInspectRoot(t *testing.T) {
 	root, cwd := t.TempDir(), t.TempDir()
-	if err := os.WriteFile(filepath.Join(root, ".exitctl.yaml"), []byte("version: 1\nrepo_name: from-root\n"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(root, ".lockinaudit.yaml"), []byte("version: 1\nrepo_name: from-root\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(cwd, ".exitctl.yaml"), []byte("version: 1\nrepo_name: from-cwd\n"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(cwd, ".lockinaudit.yaml"), []byte("version: 1\nrepo_name: from-cwd\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	cfg, err := Discover(root, cwd, "")

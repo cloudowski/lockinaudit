@@ -8,14 +8,14 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/result"
-	"github.com/cloudowski/exitctl/internal/testutil"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/testutil"
 )
 
 func loadShop(t *testing.T) *result.Document {
 	t.Helper()
-	doc, err := result.Load(filepath.Join(testutil.RepoRoot(t), "testdata", "golden", "scan", "shop-aws.json"))
+	doc, err := result.Load(filepath.Join(testutil.RepoRoot(t), "testdata", "golden", "inspect", "shop-aws.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -143,7 +143,7 @@ func TestReportNeutralCoverage(t *testing.T) {
 }
 
 func TestReportNothingScored(t *testing.T) {
-	doc := &result.Document{Format: "exitctl.result/v1", Kind: result.KindResult}
+	doc := &result.Document{Format: "lockinaudit.result/v1", Kind: result.KindResult}
 	doc.Analysis.Status = "nothing_scored"
 	doc.Normalize()
 	s := string(render(t, doc, Options{}))

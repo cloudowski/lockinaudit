@@ -9,7 +9,7 @@ import (
 )
 
 // openFile opens a local file with the OS default handler. This is the only
-// os/exec use in exitctl (depguard excludes this file). It only accepts an
+// os/exec use in lockinaudit (depguard excludes this file). It only accepts an
 // existing regular file path, never a URL.
 func openFile(path string) error {
 	abs, err := filepath.Abs(path)

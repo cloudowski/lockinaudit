@@ -8,10 +8,10 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/graph"
-	"github.com/cloudowski/exitctl/internal/render/terminal"
-	"github.com/cloudowski/exitctl/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/graph"
+	"github.com/cloudowski/lockinaudit/internal/render/terminal"
+	"github.com/cloudowski/lockinaudit/internal/result"
 )
 
 func init() { register(newExplainCmd) }
@@ -177,7 +177,7 @@ func resolveTarget(doc *result.Document, arg string) (*result.Node, *result.Anch
 }
 
 // byLocation resolves the "<location>: <address>" form printed by
-// "scan --wide" for addresses shared by several anchors: nodes with that
+// "inspect --wide" for addresses shared by several anchors: nodes with that
 // display address whose source location contains the location as whole
 // path segments.
 func byLocation(doc *result.Document, arg string) []*result.Node {

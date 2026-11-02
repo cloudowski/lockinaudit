@@ -1,4 +1,4 @@
-// Package catalog loads, validates, and indexes the exitctl knowledge catalog
+// Package catalog loads, validates, and indexes the lockinaudit knowledge catalog
 // (data-model.md Part 1, Core Element 1). The catalog is data: no per-service
 // behavior lives in code.
 package catalog
@@ -149,7 +149,7 @@ type SdkPattern struct {
 	Packages  []string  `yaml:"packages"`  // service-specific package globs
 	Imports   []string  `yaml:"imports"`   // RE2 line patterns
 	Usage     []string  `yaml:"usage"`     // RE2 generic-client patterns
-	Gate      []string  `yaml:"gate"`      // packages required to scan Usage
+	Gate      []string  `yaml:"gate"`      // packages required to inspect Usage
 	Trait     *TraitRef `yaml:"trait"`     // default proprietary-sdk
 }
 

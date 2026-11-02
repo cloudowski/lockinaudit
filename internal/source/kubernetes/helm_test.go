@@ -3,8 +3,8 @@ package kubernetes
 import (
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/source"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/source"
 )
 
 var chartFiles = map[string]string{
@@ -94,14 +94,14 @@ func TestHelmRender(t *testing.T) {
 			if ev := sc.Evidence[0]; ev.Path != "charts/app/templates/storage.yaml" || ev.Line != 3 || ev.Excerpt != "kind: StorageClass" {
 				t.Errorf("sc evidence = %+v", ev)
 			}
-			pvc := id("/PersistentVolumeClaim/default/exitctl-app")
+			pvc := id("/PersistentVolumeClaim/default/lockinaudit-app")
 			if n := nodeByID(f, pvc); n == nil || n.Evidence[0].Line != 9 {
 				t.Fatalf("pvc = %+v", n)
 			}
 			if hasEdge(f, pvc, sc.ID, "spec.storageClassName") == nil {
 				t.Errorf("missing pvc -> sc edge: %+v", f.RawEdges)
 			}
-			dep := id("apps/Deployment/default/exitctl-app")
+			dep := id("apps/Deployment/default/lockinaudit-app")
 			d := nodeByID(f, dep)
 			if d == nil || d.Evidence[0].Path != "charts/app/templates/deploy.yaml" || d.Evidence[0].Line != 2 {
 				t.Fatalf("deployment = %+v", d)

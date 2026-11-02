@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<meta name="generator" content="exitctl">
+<meta name="generator" content="lockinaudit">
 <title>Lock-in report: shop-aws</title>
 <style>
-/* exitctl report styles. Self-contained: no external fonts or images. */
+/* lockinaudit report styles. Self-contained: no external fonts or images. */
 
 :root {
   color-scheme: light dark;
@@ -342,7 +342,7 @@ footer .mono { font-size: 12px; }
 <body>
 <header class="topbar">
   <div class="wrap">
-    <div class="brand">exitctl <span>lock-in report</span></div>
+    <div class="brand">lockinaudit <span>lock-in report</span></div>
     <nav aria-label="Sections">
       <a href="#summary">Summary</a>
       <a href="#dimensions">Dimensions</a>
@@ -884,7 +884,7 @@ footer .mono { font-size: 12px; }
     <div class="table-wrap"><table>
       <thead><tr><th>Gap</th><th>Subject</th><th>Location</th><th class="num">Count</th></tr></thead>
       <tbody>
-        <tr><td>Reference to an object outside the scanned inputs</td><td class="mono">networking.k8s.io/IngressClass/_/alb</td><td class="mono">k8s/ingress.yaml</td><td class="num">1</td></tr>
+        <tr><td>Reference to an object outside the inspected inputs</td><td class="mono">networking.k8s.io/IngressClass/_/alb</td><td class="mono">k8s/ingress.yaml</td><td class="num">1</td></tr>
       </tbody>
     </table></div>
     <h3 style="font-size: 15px; margin: 16px 0 6px">Notes</h3>
@@ -909,7 +909,7 @@ footer .mono { font-size: 12px; }
 </main>
 
 <footer>
-  <div class="wrap mono">exitctl 0.1.0-dev | catalog 2026.10.1 | rules 1.1.0 | config 8d36fc36 | draft catalog</div>
+  <div class="wrap mono">lockinaudit 0.2.0-dev | catalog 2026.10.1 | rules 1.1.0 | config 8d36fc36 | draft catalog</div>
 </footer>
 
 <script type="application/json" id="data">{"nodes":[{"label":"aws.ebs (implied)","type":"aws.ebs","service":"aws.ebs","risk":0.25,"class":"service","wave":1,"dependents":[4,5,7,8,9],"anchor":11},{"label":"aws.elb (implied)","type":"aws.elb","service":"aws.elb","risk":0.225,"class":"service","wave":1,"dependents":[8],"anchor":15},{"label":"ConfigMap/shop/orders-config","type":"/ConfigMap","risk":0,"class":"neutral","wave":1,"dependents":[5,7,8]},{"label":"Namespace/_/shop","type":"/Namespace","risk":0,"class":"neutral","wave":1},{"label":"PersistentVolumeClaim/shop/orders-cache","type":"/PersistentVolumeClaim","risk":0,"class":"neutral","wave":3,"dependents":[5,7,8]},{"label":"Service/shop/orders-api","type":"/Service","risk":0,"class":"neutral","wave":5,"dependents":[8]},{"label":"ServiceAccount/shop/orders-api","type":"/ServiceAccount","risk":0,"class":"neutral","wave":2,"dependents":[5,7,8]},{"label":"apps/Deployment/shop/orders-api","type":"apps/Deployment","risk":0,"class":"neutral","wave":4,"dependents":[5,8]},{"label":"networking.k8s.io/Ingress/shop/orders-api","type":"networking.k8s.io/Ingress","risk":0,"class":"neutral","wave":6},{"label":"storage.k8s.io/StorageClass/_/gp3","type":"storage.k8s.io/StorageClass","risk":0,"class":"neutral","wave":2,"dependents":[4,5,7,8]},{"label":"action/actions/checkout","type":"ci_action","risk":0,"class":"neutral","wave":1},{"label":"action/aws-actions/amazon-ecr-login","type":"ci_action","service":"aws.ecr","risk":0.175,"class":"service","wave":1,"anchor":17},{"label":"action/aws-actions/configure-aws-credentials","type":"ci_action","service":"AWS IAM","risk":0.45,"class":"service","wave":1,"dependents":[5,6,7,8],"anchor":6},{"label":"aws_cognito_user_pool.main","type":"aws_cognito_user_pool","service":"aws.cognito","risk":0.8,"class":"service","wave":1,"dependents":[14],"anchor":5},{"label":"aws_cognito_user_pool_client.web","type":"aws_cognito_user_pool_client","service":"aws.cognito","risk":0.8,"class":"service","wave":2,"anchor":12},{"label":"aws_dynamodb_table.orders","type":"aws_dynamodb_table","service":"Amazon DynamoDB","risk":0.8,"class":"service","wave":1,"dependents":[17,18,19,27],"anchor":1},{"label":"aws_iam_role.lambda","type":"aws_iam_role","service":"AWS IAM","risk":0.45,"class":"service","wave":1,"dependents":[5,6,7,8,17,18,19],"anchor":3},{"label":"aws_lambda_event_source_mapping.events_queue","type":"aws_lambda_event_source_mapping","service":"AWS Lambda","risk":0.72,"class":"service","wave":4,"anchor":13},{"label":"aws_lambda_event_source_mapping.orders_stream","type":"aws_lambda_event_source_mapping","service":"AWS Lambda","risk":0.72,"class":"service","wave":4,"anchor":14},{"label":"aws_lambda_function.order_processor","type":"aws_lambda_function","service":"AWS Lambda","risk":0.72,"class":"service","wave":3,"dependents":[17,18],"anchor":2},{"label":"aws_security_group.app","type":"aws_security_group","service":"aws.vpc","risk":0.45,"class":"service","wave":2,"dependents":[17,18,19],"anchor":7},{"label":"aws_sqs_queue.events","type":"aws_sqs_queue","service":"aws.sqs","risk":0.45,"class":"service","wave":1,"dependents":[17,18,19],"anchor":8},{"label":"aws_ssm_parameter.db","type":"aws_ssm_parameter","service":"aws.ssm-parameter-store","risk":0.45,"class":"service","wave":1,"anchor":16},{"label":"aws_subnet.a","type":"aws_subnet","service":"aws.vpc","risk":0.45,"class":"service","wave":2,"dependents":[17,18,19],"anchor":9},{"label":"aws_subnet.b","type":"aws_subnet","service":"aws.vpc","risk":0.45,"class":"service","wave":2,"dependents":[17,18,19],"anchor":10},{"label":"aws_vpc.main","type":"aws_vpc","service":"aws.vpc","risk":0.45,"class":"service","wave":1,"dependents":[17,18,19,20,23,24],"anchor":4},{"label":"random_id.suffix (not scored)","type":"random_id","risk":0,"class":"context","wave":1},{"label":"component services/orders","type":"component","risk":0,"class":"component","wave":2},{"label":"image/gcr.io/distroless/nodejs20","type":"container_image","service":"gcp.artifact-registry","risk":0.175,"class":"service","wave":1,"anchor":18},{"label":"image/public.ecr.aws/docker/library/node:20-alpine","type":"container_image","service":"aws.ecr","risk":0.175,"class":"service","wave":1,"anchor":19}],"edges":[[4,9,"reference"],[5,7,"reference"],[6,12,"binding"],[6,16,"binding"],[7,2,"reference"],[7,4,"reference"],[7,6,"reference"],[8,1,"binding"],[8,5,"reference"],[9,0,"binding"],[14,13,"containment"],[17,19,"data-flow"],[17,21,"data-flow"],[18,15,"data-flow"],[18,19,"data-flow"],[19,15,"reference"],[19,16,"binding"],[19,20,"containment"],[19,21,"reference"],[19,23,"containment"],[19,24,"containment"],[20,25,"containment"],[23,25,"containment"],[24,25,"containment"],[27,15,"usage"]],"groups":[]}</script>
@@ -968,7 +968,7 @@ var Yr=function(e){if(!(this instanceof Yr))return new Yr(e);this.id="Thenable/1
 
 </script>
 <script>
-/* exitctl report: interactive dependency graph.
+/* lockinaudit report: interactive dependency graph.
  * Reads the embedded JSON payload (script#data), builds a Cytoscape graph with
  * expandable groups, highlights the precomputed blast radius of a clicked node,
  * and labels migration waves on request. No network requests. */

@@ -1,4 +1,4 @@
-/* exitctl report: interactive dependency graph.
+/* lockinaudit report: interactive dependency graph.
  * Reads the embedded JSON payload (script#data), builds a Cytoscape graph with
  * expandable groups, highlights the precomputed blast radius of a clicked node,
  * and labels migration waves on request. No network requests. */

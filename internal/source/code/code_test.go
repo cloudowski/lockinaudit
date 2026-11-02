@@ -7,12 +7,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/source"
-	"github.com/cloudowski/exitctl/internal/source/packages"
-	"github.com/cloudowski/exitctl/internal/testutil"
-	"github.com/cloudowski/exitctl/internal/walk"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/source"
+	"github.com/cloudowski/lockinaudit/internal/source/packages"
+	"github.com/cloudowski/lockinaudit/internal/testutil"
+	"github.com/cloudowski/lockinaudit/internal/walk"
 )
 
 const repo = "github.com/acme/shop"

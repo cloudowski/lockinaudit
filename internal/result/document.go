@@ -13,9 +13,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/graph"
-	"github.com/cloudowski/exitctl/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/graph"
+	"github.com/cloudowski/lockinaudit/internal/model"
 )
 
 // Document kinds.
@@ -35,7 +35,7 @@ type Versions struct {
 	CatalogDraftsIncluded bool   `json:"catalog_drafts_included,omitempty"`
 }
 
-// Input is one scanned repository or merged input.
+// Input is one inspected repository or merged input.
 type Input struct {
 	Repo     string   `json:"repo"`
 	AsOf     string   `json:"as_of"`
@@ -184,7 +184,7 @@ type Analysis struct {
 	Notes                  []string         `json:"notes"`
 }
 
-// Document is a scan, merge, or graph export result.
+// Document is an inspection, merge, or graph export result.
 type Document struct {
 	Format   string      `json:"format"`
 	Kind     string      `json:"kind"`
@@ -333,7 +333,7 @@ func (d *Document) Normalize() {
 // The document is streamed to w with v1 semantics (byte-identical to
 // json.Encoder with SetEscapeHTML(false) and two-space indent) instead of
 // being marshaled and then re-indented in memory: for large graphs the
-// buffered marshal+indent dominated scan time and peak memory (T097).
+// buffered marshal+indent dominated inspection time and peak memory (T097).
 func Encode(w io.Writer, d *Document) error {
 	d.Normalize()
 	bw := bufio.NewWriterSize(w, 256<<10)

@@ -1,5 +1,5 @@
-VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo 0.1.0-dev)
-PKG     := github.com/cloudowski/exitctl
+VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo 0.2.0-dev)
+PKG     := github.com/cloudowski/lockinaudit
 # Shown at the bottom of HTML and Markdown reports (FR-074).
 SUPPORT_EMAIL ?= tomasz@cloudowski.com
 LDFLAGS := -s -w -X $(PKG)/internal/version.Tool=$(VERSION) -X $(PKG)/internal/version.SupportEmail=$(SUPPORT_EMAIL)
@@ -8,7 +8,7 @@ GO      ?= go
 .PHONY: build test lint golden-update determinism e2e-offline cross review clean
 
 build:
-	CGO_ENABLED=0 $(GO) build -trimpath -ldflags "$(LDFLAGS)" -o bin/exitctl ./cmd/exitctl
+	CGO_ENABLED=0 $(GO) build -trimpath -ldflags "$(LDFLAGS)" -o bin/lockinaudit ./cmd/lockinaudit
 
 test:
 	$(GO) test ./...
@@ -33,7 +33,7 @@ cross:
 	@for os in linux darwin; do for arch in amd64 arm64; do \
 		echo "building $$os/$$arch"; \
 		CGO_ENABLED=0 GOOS=$$os GOARCH=$$arch $(GO) build -trimpath -ldflags "$(LDFLAGS)" \
-			-o dist/exitctl-$$os-$$arch ./cmd/exitctl || exit 1; \
+			-o dist/lockinaudit-$$os-$$arch ./cmd/lockinaudit || exit 1; \
 	done; done
 
 review:

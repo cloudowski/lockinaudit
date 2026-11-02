@@ -6,13 +6,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/result"
-	"github.com/cloudowski/exitctl/internal/testutil"
+	"github.com/cloudowski/lockinaudit/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/testutil"
 )
 
-func loadScanDoc(t *testing.T, name string) *result.Document {
+func loadInspectDoc(t *testing.T, name string) *result.Document {
 	t.Helper()
-	doc, err := result.Load(filepath.Join(testutil.RepoRoot(t), "testdata", "golden", "scan", name+".json"))
+	doc, err := result.Load(filepath.Join(testutil.RepoRoot(t), "testdata", "golden", "inspect", name+".json"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,7 +45,7 @@ func TestTreeGolden(t *testing.T) {
 	utf8 := Options{UTF8: true, Width: 80}
 	ascii := Options{Width: 80}
 	for _, name := range []string{"shop-aws", "cycles"} {
-		doc := loadScanDoc(t, name)
+		doc := loadInspectDoc(t, name)
 		t.Run(name, func(t *testing.T) {
 			testutil.Golden(t, "graph/"+name+".tree.txt", renderTree(t, doc, TreeOptions{}, utf8))
 			testutil.Golden(t, "graph/"+name+".tree.ascii.txt", renderTree(t, doc, TreeOptions{}, ascii))
@@ -56,7 +56,7 @@ func TestTreeGolden(t *testing.T) {
 }
 
 func TestTreeBlastRadius(t *testing.T) {
-	doc := loadScanDoc(t, "shop-aws")
+	doc := loadInspectDoc(t, "shop-aws")
 	id := nodeIDByAddress(t, doc, "aws_dynamodb_table.orders")
 	got := renderTree(t, doc, TreeOptions{BlastRadius: id}, Options{UTF8: true, Width: 80})
 	testutil.Golden(t, "graph/shop-aws.blast-orders.txt", got)

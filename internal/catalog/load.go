@@ -21,8 +21,8 @@ import (
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
 
-	"github.com/cloudowski/exitctl/internal/version"
-	"github.com/cloudowski/exitctl/schemas"
+	"github.com/cloudowski/lockinaudit/internal/version"
+	"github.com/cloudowski/lockinaudit/schemas"
 )
 
 // SchemaError reports a catalog file whose schema major this build cannot
@@ -30,14 +30,14 @@ import (
 type SchemaError struct {
 	File   string
 	Schema string
-	// Newer is true when the file needs a newer exitctl; false when it is
+	// Newer is true when the file needs a newer lockinaudit; false when it is
 	// an older major without a registered migration.
 	Newer bool
 }
 
 func (e *SchemaError) Error() string {
 	if e.Newer {
-		return fmt.Sprintf("catalog schema %s requires a newer exitctl (%s)", e.Schema, e.File)
+		return fmt.Sprintf("catalog schema %s requires a newer lockinaudit (%s)", e.Schema, e.File)
 	}
 	return fmt.Sprintf("catalog schema %s is no longer supported: no migration available (%s)", e.Schema, e.File)
 }
@@ -62,7 +62,7 @@ func compiledEntrySchema() (*jsonschema.Schema, error) {
 			entrySchemaErr = err
 			return
 		}
-		const loc = "https://exitctl.invalid/schemas/" + entrySchemaFile
+		const loc = "https://lockinaudit.invalid/schemas/" + entrySchemaFile
 		c := jsonschema.NewCompiler()
 		c.AssertFormat()
 		if err := c.AddResource(loc, doc); err != nil {

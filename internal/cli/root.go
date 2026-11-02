@@ -1,4 +1,4 @@
-// Package cli implements the exitctl commands (contracts/cli.md).
+// Package cli implements the lockinaudit commands (contracts/cli.md).
 package cli
 
 import (
@@ -22,8 +22,8 @@ type GlobalOptions struct {
 	IncludeDrafts bool
 }
 
-// DefaultInput is where scan stores its last result.
-const DefaultInput = ".exitctl/last-result.json"
+// DefaultInput is where inspect stores its last result.
+const DefaultInput = ".lockinaudit/last-result.json"
 
 // App holds the streams and options of one invocation (testable without os).
 type App struct {
@@ -35,7 +35,7 @@ type App struct {
 // NewRootCmd builds the command tree.
 func NewRootCmd(app *App) *cobra.Command {
 	root := &cobra.Command{
-		Use:           "exitctl",
+		Use:           "lockinaudit",
 		Short:         "Measure cloud vendor lock-in, offline and read-only",
 		SilenceUsage:  true,
 		SilenceErrors: true,
@@ -44,7 +44,7 @@ func NewRootCmd(app *App) *cobra.Command {
 	root.SetErr(app.Err)
 	f := root.PersistentFlags()
 	f.StringVar(&app.Opts.CatalogDir, "catalog", "", "use a local catalog directory instead of the built-in catalog")
-	f.StringVar(&app.Opts.ConfigPath, "config", "", "path to .exitctl.yaml (default: scan root, then current directory)")
+	f.StringVar(&app.Opts.ConfigPath, "config", "", "path to .lockinaudit.yaml (default: inspection root, then current directory)")
 	f.StringVar(&app.Opts.InputPath, "input", DefaultInput, "result file for explain, graph, coverage, report")
 	f.BoolVar(&app.Opts.NoColor, "no-color", false, "disable color (also NO_COLOR)")
 	f.StringVar(&app.Opts.Emoji, "emoji", "auto", "emoji markers: auto, always, never")
@@ -65,12 +65,12 @@ var subcommands []func(*App) *cobra.Command
 
 func register(f func(*App) *cobra.Command) { subcommands = append(subcommands, f) }
 
-// Run executes exitctl with args and returns the exit code.
+// Run executes lockinaudit with args and returns the exit code.
 func Run(args []string, out, errw io.Writer) (code int) {
 	app := &App{Out: out, Err: errw}
 	defer func() {
 		if r := recover(); r != nil {
-			_, _ = fmt.Fprintln(errw, "exitctl: internal error, please report it")
+			_, _ = fmt.Fprintln(errw, "lockinaudit: internal error, please report it")
 			if app.Opts.Verbose {
 				_, _ = fmt.Fprintf(errw, "%v\n%s", r, debug.Stack())
 			}
@@ -81,10 +81,10 @@ func Run(args []string, out, errw io.Writer) (code int) {
 	root.SetArgs(args)
 	err := root.Execute()
 	if err != nil {
-		_, _ = fmt.Fprintln(errw, "exitctl:", err)
+		_, _ = fmt.Fprintln(errw, "lockinaudit:", err)
 	}
 	return codeOf(err)
 }
 
-// Execute runs exitctl with os.Args and returns the exit code.
+// Execute runs lockinaudit with os.Args and returns the exit code.
 func Execute() int { return Run(os.Args[1:], os.Stdout, os.Stderr) }

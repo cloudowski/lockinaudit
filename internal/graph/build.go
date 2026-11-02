@@ -5,10 +5,10 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/model"
-	"github.com/cloudowski/exitctl/internal/rules"
-	"github.com/cloudowski/exitctl/internal/sdkname"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/rules"
+	"github.com/cloudowski/lockinaudit/internal/sdkname"
 )
 
 // ImpliedPrefix prefixes the IDs of implied service nodes: "implied//<service>".
@@ -646,7 +646,7 @@ func lookupPath(attrs map[string]any, path string) ([]any, bool) {
 
 // unknownSDKPackage records an unknown_sdk gap for a cloud SDK package that
 // no catalog service claims. Packages whose names follow no SDK convention
-// are not cloud SDKs as far as exitctl can tell and are left alone.
+// are not cloud SDKs as far as lockinaudit can tell and are left alone.
 func (b *builder) unknownSDKPackage(pu model.PackageUse) {
 	ref, ok := sdkname.Derive(pu.Ecosystem, pu.Name)
 	if !ok {

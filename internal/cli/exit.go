@@ -8,7 +8,7 @@ import (
 // Exit codes (contracts/cli.md "Exit codes").
 const (
 	ExitOK           = 0
-	ExitNothing      = 2 // nothing to scan / nothing scored
+	ExitNothing      = 2 // nothing to inspect / nothing scored
 	ExitInvalidInput = 3 // bad flags, invalid config, invalid catalog, incompatible result file
 	ExitInternal     = 4
 )

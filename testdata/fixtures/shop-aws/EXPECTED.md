@@ -2,7 +2,7 @@
 
 A small AWS shop: Terraform (VPC, DynamoDB with stream, SQS, Lambda, Cognito), Kubernetes
 on EKS (ALB ingress, EBS storage class, IRSA), and a Node.js service that uses the
-DynamoDB SDK. Used by golden tests for `exitctl scan`, `explain`, `report`, and `graph`.
+DynamoDB SDK. Used by golden tests for `lockinaudit inspect`, `explain`, `report`, and `graph`.
 
 The golden files under `testdata/golden/` are the source of truth for exact output. This
 file documents intent, so a reviewer can tell whether a golden change is a fix or a

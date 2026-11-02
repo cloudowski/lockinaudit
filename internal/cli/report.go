@@ -7,11 +7,11 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/cloudowski/exitctl/internal/catalog"
-	"github.com/cloudowski/exitctl/internal/render/html"
-	"github.com/cloudowski/exitctl/internal/render/markdown"
-	"github.com/cloudowski/exitctl/internal/result"
-	"github.com/cloudowski/exitctl/internal/version"
+	"github.com/cloudowski/lockinaudit/internal/catalog"
+	"github.com/cloudowski/lockinaudit/internal/render/html"
+	"github.com/cloudowski/lockinaudit/internal/render/markdown"
+	"github.com/cloudowski/lockinaudit/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/version"
 )
 
 func init() { register(newReportCmd) }
@@ -29,7 +29,7 @@ func newReportCmd(app *App) *cobra.Command {
 	}
 	fl := cmd.Flags()
 	fl.StringVar(&format, "format", "html", "report format: html, md, or json")
-	fl.StringVarP(&output, "output", "o", "", "output file (default exitctl-report.<ext>)")
+	fl.StringVarP(&output, "output", "o", "", "output file (default lockinaudit-report.<ext>)")
 	fl.BoolVar(&open, "open", false, "open the written report with the default application")
 	return cmd
 }
@@ -68,7 +68,7 @@ func (app *App) runReport(format, output string, open bool) error {
 		return Errorf(ExitInternal, "cannot render the report: %v", err)
 	}
 	if output == "" {
-		output = "exitctl-report." + ext
+		output = "lockinaudit-report." + ext
 	}
 	if err := os.WriteFile(output, buf.Bytes(), 0o644); err != nil {
 		return Errorf(ExitInvalidInput, "cannot write %s: %v", output, err)
@@ -76,7 +76,7 @@ func (app *App) runReport(format, output string, open bool) error {
 	_, _ = fmt.Fprintln(app.Out, "wrote", output)
 	if open {
 		if err := openFile(output); err != nil {
-			_, _ = fmt.Fprintln(app.Err, "exitctl:", err)
+			_, _ = fmt.Fprintln(app.Err, "lockinaudit:", err)
 		}
 	}
 	return nil

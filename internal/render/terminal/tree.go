@@ -5,15 +5,15 @@ import (
 	"io"
 	"sort"
 
-	"github.com/cloudowski/exitctl/internal/graph"
-	"github.com/cloudowski/exitctl/internal/result"
+	"github.com/cloudowski/lockinaudit/internal/graph"
+	"github.com/cloudowski/lockinaudit/internal/result"
 )
 
 // GroupKindType is the kind of a type collapse group (data-model.md 3.7).
 const GroupKindType = "type"
 
 // TreeOptions controls the dependency tree view (contracts/cli.md
-// "exitctl graph").
+// "lockinaudit graph").
 type TreeOptions struct {
 	// Expand disables type collapse: every node gets its own line.
 	Expand bool

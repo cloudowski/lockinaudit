@@ -3,7 +3,7 @@ package sdkname
 import (
 	"testing"
 
-	"github.com/cloudowski/exitctl/internal/model"
+	"github.com/cloudowski/lockinaudit/internal/model"
 )
 
 func TestDerive(t *testing.T) {
